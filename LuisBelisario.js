@@ -72,40 +72,32 @@ class Contenedor {
 
 }
 
-/******************** script **************************/
-
+//SCRIPT
 const productos = new Contenedor('productos.txt')
-
-const prueba = async () => {
+const test = async () => {
     try {
-
-        /*prueba getAll*/
         let array = await productos.getAll()
         console.log(array)
 
-        /*prueba save*/
         await productos.save(
             {
-                "title": "producto4",
-                "price": 123,
-                "thumbnail": "url4"
+                "title": "Dispensador de Acero",
+                "price": 2500,
+                "thumbnail": "https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667327886/fabihogar/dispensadorAcero1_uuq4ek.png"
             }
         )
         array = await productos.getAll()
         console.log(array)
 
-        /*prueba getById*/
         let idResp = await productos.getById(0)
         console.log(idResp)
         idResp = await productos.getById(2)
         console.log(idResp)
 
-        /*prueba deleteById*/
         await productos.deleteById(2)
         array = await productos.getAll()
         console.log(array)
 
-        /*prueba deleteAll*/
         await productos.deleteAll()
         array = await productos.getAll()
         console.log(array)
@@ -114,5 +106,4 @@ const prueba = async () => {
         console.log(err)
     }
 }
-
-prueba()
+test()
