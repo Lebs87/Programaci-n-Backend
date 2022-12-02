@@ -72,38 +72,4 @@ class Contenedor {
 
 }
 
-//SCRIPT
-const productos = new Contenedor('productos.txt')
-const test = async () => {
-    try {
-        let array = await productos.getAll()
-        console.log(array)
-
-        await productos.save(
-            {
-                "title": "Dispensador de Acero",
-                "price": 2500,
-                "thumbnail": "https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667327886/fabihogar/dispensadorAcero1_uuq4ek.png"
-            }
-        )
-        array = await productos.getAll()
-        console.log(array)
-
-        let idResp = await productos.getById(0)
-        console.log(idResp)
-        idResp = await productos.getById(2)
-        console.log(idResp)
-
-        await productos.deleteById(2)
-        array = await productos.getAll()
-        console.log(array)
-
-        await productos.deleteAll()
-        array = await productos.getAll()
-        console.log(array)
-
-    } catch (err) {
-        console.log(err)
-    }
-}
-test()
+module.exports = Contenedor

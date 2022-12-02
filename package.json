@@ -1,0 +1,24 @@
+{
+  "name": "desafio3",
+  "version": "1.0.0",
+  "description": "Desafío N° 3",
+  "main": "LuisBelisario.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lebs87/Programaci-n-Backend.git"
+  },
+  "author": "Luis Belisario",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lebs87/Programaci-n-Backend/issues"
+  },
+  "homepage": "https://github.com/Lebs87/Programaci-n-Backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
