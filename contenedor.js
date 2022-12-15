@@ -15,7 +15,7 @@ class Contenedor {
         }
     }
 
-    async saveFile(file, objects) {
+    async saveFile(objects) {
         try {
             await fs.promises.writeFile(
                 file, JSON.stringify(objects, null, 2)

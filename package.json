@@ -1,7 +1,7 @@
 {
-  "name": "desafio3",
+  "name": "desafio4",
   "version": "1.0.0",
-  "description": "Desafío N° 3",
+  "description": "Desafío N° 4",
   "main": "LuisBelisario.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
