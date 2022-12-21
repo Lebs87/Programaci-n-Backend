@@ -1,8 +1,8 @@
 {
-  "name": "desafio4",
+  "name": "desafio5",
   "version": "1.0.0",
-  "description": "Desafío N° 4",
-  "main": "LuisBelisario.js",
+  "description": "Desafío N° 5",
+  "main": "contenedor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -18,7 +18,13 @@
   },
   "homepage": "https://github.com/Lebs87/Programaci-n-Backend#readme",
   "dependencies": {
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
-    "nodemon": "^2.0.20"
+    "express-handlebars": "^6.0.6",
+    "handlebars": "^4.7.7",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "pug": "^3.0.2",
+    "uuid": "^9.0.0"
   }
 }

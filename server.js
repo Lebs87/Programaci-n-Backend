@@ -1,64 +1,61 @@
 const express = require('express')
-const { Router } = express
+const productRouter = require('./routes/productRouter')
+const products = require('./class/productsClass.js')
+const path = require ("path")
 const app = express()
-const apiRouter = Router()
 app.use(express.json())
-app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
-const Contenedor = require('./contenedor.js')
-const productos = new Contenedor('productos.txt')
+//---------PLANTILLAS
+app.set('views', path.resolve(__dirname, './views'))
 
-/* ROUTER apiRouter */
-app.use('/api', apiRouter)
+/*
+---- HBS ----
+const {engine}=require("express-handlebars")
+app.engine("handlebars", engine())
+app.set("view engine", "handlebars")
+app.get('/', (req, res) => {
+  res.render('hbs/form')
+})
+app.get('/productos', async (req, res) => {
+  let productos = await products.getAll()
+  res.render('hbs/table', { productos })
+})
+*/
 
-/*get productos*/
-apiRouter.get('/productos', async (req, res) => {
-  const allProducts = await productos.getAll()
-  res.json( allProducts )
+/*
+---- PUG ----
+app.set('view engine', "pug")
+app.get('/', (req, res) => {
+  res.render('pug/form.pug')
+})
+app.get('/productos', async (req, res) => {
+  let productos = await products.getAll()
+  res.render('pug/table.pug', { productos })
+})
+*/
+
+//---- EJS ----
+app.set('view engine', "ejs")
+
+app.get('/', (req, res) => {
+  res.render('ejs/form.ejs')
 })
 
-/*get producto segun id*/
-apiRouter.get('/productos/:id', async (req, res) => {
-  const id = Number(req.params.id)
-  const producto = await productos.getById( id )
-  producto ? res.json( producto )
-    : res.status(404).send({ error: 'producto no encontrado'})
+app.get('/productos', async (req, res) => {
+  let productos = await products.getAll()
+  res.render('ejs/table.ejs', { productos })
 })
 
-/*post producto*/
-apiRouter.post('/productos', async (req, res) => {
-  const productoToAdd = req.body
-  const idNew = await productos.save( productoToAdd )
-  res.send({ idNew })
-})
+//---- FIN PLANTILLAS ----
 
-/*put producto*/
-apiRouter.put('/productos/:id', async (req, res) => {
-  const id = Number(req.params.id)
-  const productoToModify = req.body
+//---- API ROUTER productRouter ----
+app.use('/api', productRouter)
 
-  if(await productos.getById( id )){
-    let allProducts = await productos.getAll()
-    allProducts[ id - 1 ] = {"id": id, ...productoToModify}
-    productos.saveFile( allProducts )
-    res.send({ productoToModify })
-  } else {
-    res.status(404).send({ error: 'id no valido'})
-  }
-})
+//-----SERVER ON
+const PORT = 8080
+const server = app.listen(PORT, () =>
+	console.log(`Server running on port ${PORT}`)
+)
 
-/*Delete producto*/
-apiRouter.delete('/productos/:id', async (req, res) => {
-  const id = Number(req.params.id)
-  const productoToDelete = await productos.getById( id )
-
-  if (productoToDelete) {
-    await productos.deleteById( id )
-    res.send({ borrado: productoToDelete})
-  } else {
-    res.status(404).send({ error: 'producto no encontrado'})
-  }
-})
-
-app.listen(8080, () => console.log('escuchando en 8080'))
+server.on('error', err => console.log(`Error: ${err}`));
