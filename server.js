@@ -48,7 +48,7 @@ apiRouter.put('/productos/:id', async (req, res) => {
   }
 })
 
-/*delete producto*/
+/*Delete producto*/
 apiRouter.delete('/productos/:id', async (req, res) => {
   const id = Number(req.params.id)
   const productoToDelete = await productos.getById( id )
