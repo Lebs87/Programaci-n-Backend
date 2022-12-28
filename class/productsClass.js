@@ -69,4 +69,5 @@ class Contanier {
     }
 }
 const products = new Contanier('./data/products.txt')
-module.exports = products
+const chat = new Contanier('./data/chat.txt')
+module.exports = { products, chat}
