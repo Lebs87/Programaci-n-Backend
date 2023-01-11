@@ -1,14 +1,26 @@
-.user {
+.user{
     display: inline;
-    color: blue;
-    font-weight: bold;
-}
-.date {
+    color: rgb(87, 87, 197);
+  }
+  
+  .date{
     display: inline;
-    color: brown;
-}
-.mensaje {
+    color: rgb(185, 11, 69);
+  }
+  
+  .mensaje{
     display: inline;
-    color: green;
-    font-style: italic;
-}
+    color: rgb(25, 179, 89);
+  }
+
+  .bgblack{
+    background-color: black;
+  }
+
+  .navText{
+    color: blanchedalmond;
+    list-style: none;
+    text-decoration: none;
+    margin: 1rem;
+    padding: 3rem 0.1rem;
+  }

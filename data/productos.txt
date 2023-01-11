@@ -1,20 +1,32 @@
 [
   {
     "id": 1,
+    "timestamp": "9/1/2023 21:25:02",
     "title": "Colador de Pasta",
-    "price": 1500,
+    "description": "Colador de alta Calidad",
+    "code": "123",
+    "price": "1500",
+    "stock": "8",
     "thumbnail": "https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png"
   },
   {
     "id": 2,
+    "timestamp": "9/1/2023 21:25:02",
     "title": "Mortero de Marmol",
-    "price": 3000,
+    "description": "Mortero de alta Calidad",
+    "code": "124",
+    "price": "3000",
+    "stock": "11",
     "thumbnail": "https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/mortero_marmol1_okywfc.png"
   },
   {
     "id": 3,
+    "timestamp": "9/1/2023 21:25:02",
     "title": "Jarro Hervidor",
-    "price": 5000,
+    "description": "Jarro de alta Calidad",
+    "code": "125",
+    "price": "3450",
+    "stock": "10",
     "thumbnail": "https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/jarro_hervidor1_my0uxw.png"
   }
 ]

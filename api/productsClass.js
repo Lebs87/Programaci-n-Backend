@@ -31,7 +31,7 @@ class Contanier {
         const products = await this.getAll()
         try {
             const idNew = uuidv4()
-            const productNew = { id: idNew, ...product }
+            const productNew = { id: idNew, timestamp: new Date().toLocaleString(), ...product }
             products.push(productNew)
             await this.saveFile(products)
             return idNew
@@ -52,6 +52,18 @@ class Contanier {
         }
     }
 
+    async addCart(idCart) {
+        const carts = await this.getAll()
+        try {
+            const newCart = { timestamp: new Date().toLocaleString(), id: idCart }
+            carts.push(newCart)
+            await this.saveFile(carts)
+            return
+        } catch (err) {
+            console.log(`Error: ${err}`)
+        }
+    }
+
     async deleteById(id) {
         let products = await this.getAll()
 
@@ -64,10 +76,20 @@ class Contanier {
         }
     }
 
+    async getByCode(code) {
+        const products = await this.getAll()
+        try {
+            const product = products.find(ele => ele.code === code)
+            return product ? product : null
+        } catch (err) {
+            console.log(`Error: ${err}`)
+        }
+    }
+
     async deleteAll() {
         await this.saveFile(this.file, [])
     }
 }
 const products = new Contanier('./data/products.txt')
-const chat = new Contanier('./data/chat.txt')
-module.exports = { products, chat}
+const carts = new Contanier('./data/carts.txt')
+module.exports = { products, carts }
