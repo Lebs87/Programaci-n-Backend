@@ -16,76 +16,69 @@
     <script defer src="js/main.js"></script>
 </head>
 <body class="container bgblack">
-    <ol class="nav justify-content-end m-2">
-        <li class="nav-item">
-            <a class="navText" href="/">Inicio</a>
-        </li>
-        <li class="nav-item">
-            <a class="navText" href=#tablaProd>Productos</a>
-        </li>
-    </ol>
-    <div class="d-flex">
-        <div id="soloAdministrador"></div>
-        <div id="tablaProd" class="alert alert-dark text-center m-2">
-            Productos
-        </div>
-        <div class="row d-flex justify-content-center" id="productos"></div>
-        <div class="alert alert-dark text-center m-2">
-            Carrito
-        </div>
-        <div class="row d-flex justify-content-center" id="carritos"></div>
-        <div class="alert alert-dark text-center m-2">
-            Operaciones
+    <nav class="navbar navbar-expand-lg">
+        <ul class="navbar-nav mx-auto alert alert-danger text-center">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tablaProd">Productos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tablaChat">Centro de mensajes</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="alert alert-secondary text-center" role="alert">
+            Ingrese el producto
         </div>
     </div>
-    <div id="" class="row d-flex justify-content-center">
-        <div class="col">
-            <button id="newCartBtn" type="" class="btn btn-danger m-2">Nuevo carrito</button>
+    <form id="formulario" class="container" action="/api/productos" method="POST">
+        <div class="form-group">
+            <label for="name">Nombre de producto</label>
+            <input type="text" class="form-control" id="name" name="title">
+        </div>
+        <div class="form-group">
+            <label for="price">Precio</label>
+            <input type="number" class="form-control" id="price" name="price">
+        </div>
+        <div class="form-group">
+            <label for="picture">Foto del producto</label>
+            <input type="text" class="form-control" id="picture" name="thumbnail" aria-describedby="pictureHelp">
+            <div id="pictureHelp" class="form-text">URL del Producto</div>
+        </div>
+        <button type="submit" class="btn btn-danger m-2">Guardar</button>
+    </form>
+    <div id="tablaProd"></div>
+    <div class="container">
+        <div class="alert alert-secondary text-center m-2" role="alert">
+            Tabla de productos
         </div>
     </div>
-    <div id="" class="row d-flex justify-content-center m-2">
-        <div class="col m-2">
-            <input type="text" class="form-control" id="idProdNew" aria-describedby="pHelp3">
-            <div id="pHelp3" class="form-text">ID producto a agregar</div>
-        </div>
-        <div class="col m-2">
-            <input type="text" class="form-control" id="idProdCartNew" aria-describedby="pHelp4">
-            <div id="pHelp4" class="form-text">ID del carrito</div>
-        </div>
-        <div class="col m-2">
-            <button id="newItemCartBtn" type="" class="btn btn-danger">Agregar producto</button>
-        </div>
-    </div>
-    <div id="" class="row d-flex justify-content-center m-2">
-        <div class="col m-2">
-            <input type="text" class="form-control" id="idCartList" aria-describedby="pHelp4">
-            <div id="pHelp4" class="form-text">ID del carrito</div>
-        </div>
-        <div class="col m-2">
-            <button id="listItemCartBtn" type="" class="btn btn-danger">Ver productos</button>
-        </div>
-    </div>
-    <div id="itemCartList" class="row m-2"></div>
-    <div id="" class="row d-flex justify-content-center  m-2">
-        <div class="col">
-            <input type="text" class="form-control" id="idCartDel" aria-describedby="pHelp">
-            <div id="pHelp" class="form-text">ID de carrito a borrar</div>
-        </div>
-        <div class="col">
-            <button id="deleteCartBtn" type="" class="btn btn-danger">Borrar carrito</button>
-        </div>
-    </div>
-    <div id="" class="row d-flex justify-content-center m-2">
-        <div class="col m-2">
-            <input type="text" class="form-control" id="idProdDel" aria-describedby="pHelp1">
-            <div id="pHelp1" class="form-text m-2">ID producto a borrar</div>
-        </div>
-        <div class="col m-2">
-            <input type="text" class="form-control" id="idProdCartDel" aria-describedby="pHelp2">
-            <div id="pHelp2" class="form-text">ID del carrito</div>
-        </div>
-        <div class="col m-2">
-            <button id="deleteItemCartBtn" type="" class="btn btn-danger">Borrar producto</button>
+    <div class="">
+        <div id="tabla"></div>
+        <div id="tablaChat"></div>
+        <div class="container">
+            <div class="alert alert-secondary text-center m-2" role="alert">
+                Mensajes
+            </div>
+            <div class="row">
+                <label for="userEmail" class="form-label">Usuario</label>
+                <div class="col mb-3">
+                    <input type="email" class="form-control" id="userEmail" aria-describedby="pictureHelp">
+                    <div id="pictureHelp" class="form-text">Ingrese su email</div>
+                </div>
+                <div id="chat"></div>
+                <div class="col mb-3">
+                    <input type="text" class="form-control" id="userMsj" aria-describedby="pHelp">
+                    <div id="pHelp" class="form-text">Comentario</div>
+                </div>
+                <div class="col">
+                    <button id="sendBtn" type="" class="btn btn-danger">Enviar Mensaje</button>
+                </div>
+            </div>
+            <hr>
         </div>
     </div>
 </body>

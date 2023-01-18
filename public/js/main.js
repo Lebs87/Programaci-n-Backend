@@ -1,5 +1,4 @@
 const socket = io.connect();
-const administrador = true
 
 function validateEmail(email) {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -11,105 +10,78 @@ function validateEmail(email) {
     }
 }
 
-function validateProducto(producto) {
-    return Object.values(producto).includes('')
-}
-
-if (administrador) {
-    const htmlNewProductForm = templateForm()
-    document.querySelector('#soloAdministrador').innerHTML = htmlNewProductForm
-    const formulario = document.getElementById('formulario')
-    formulario.addEventListener('submit', e => {
-        e.preventDefault()
-        const producto = {
-            title: formulario[0].value,
-            description: formulario[1].value,
-            code: formulario[2].value,
-            price: formulario[3].value,
-            stock: formulario[4].value,
-            thumbnail: formulario[5].value
-        }
-        if (validateProducto(producto)) {
-            alert('Debe completar todos los datos solicitados')
-        } else {
-            socket.emit('update', producto)
-        }
-    })
-}
-
-socket.on('productos', productos => {
-    document.querySelector('#productos').innerHTML = templateProductos(productos)
+const formulario = document.getElementById('formulario')
+formulario.addEventListener('submit', e => {
+    e.preventDefault()
+    const producto = {
+        title: formulario[0].value,
+        price: formulario[1].value,
+        thumbnail: formulario[2].value
+    }
+    socket.emit('update', producto)
+    formulario.reset()
 })
 
-socket.on('carritos', carritos => {
-    document.querySelector('#carritos').innerHTML = templateCarritos(carritos)
+socket.on('productos', data => {
+  let productos = data
+ 
+  let htmlToRender = `
+  <table class="table container">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Foto</th>
+      </tr>
+    </thead>
+    </tbody>`
+  
+  productos.forEach(( element ) => {
+    htmlToRender = htmlToRender + `
+    <tr>
+      <th scope="row">${element.id}</th>
+      <td>${element.title}</td>
+      <td>${element.price}</td>
+      <td><img src=${element.thumbnail} style="max-width: 50px; height: auto;"</td>
+    </tr>` 
+  })
+  
+  htmlToRender = htmlToRender + '</tbody></table>'
+  document.querySelector('#tabla').innerHTML = htmlToRender
 })
 
-const idProdNew = document.getElementById("idProdNew")
-const idProdCartNew = document.getElementById("idProdCartNew")
-const idCartList = document.getElementById("idCartList")
-const idCartDel = document.getElementById("idCartDel")
-const idProdDel = document.getElementById("idProdDel")
-const idProdCartDel = document.getElementById("idProdCartDel")
+const userEmail = document.getElementById("userEmail")
+const userMensaje = document.getElementById("userMsj")
 
-document.getElementById("newCartBtn").addEventListener("click", ev => {
-    fetch('http://localhost:8080/api/carrito/', {
-        method: 'POST'
-    })
-        .then((response) => response.text())
-        .then((text) => {
-            alert('Se ha creado carrito con id: ' + text)
-            socket.emit('newCart')
-        })
+document.getElementById("sendBtn").addEventListener("click", ev => {
+  if ( validateEmail(userEmail.value) ) {
+    if ( userMensaje.value ){
+      socket.emit('newMsj', {
+        user: userEmail.value,
+        message: userMensaje.value
+       })
+       userMensaje.value = ''
+    } else {
+      alert("Ingrese un mensaje!")
+    }
+  }
 })
 
-document.getElementById("newItemCartBtn").addEventListener("click", ev => {
-    fetch(`http://localhost:8080/api/carrito/${idProdCartNew.value}/productos/${idProdNew.value}`, {
-        method: 'POST'
-    })
-        .then((response) => response.text())
-        .then((text) => {
-            alert(text)
-            idProdNew.value = ''
-        })
-})
+socket.on('mensajes', data => {
+  
+  let htmlChatToRender = ``
+  
+  data.forEach(( element ) => {
+    htmlChatToRender = htmlChatToRender + `
+    <div>
+      <div class="user">User: ${element.user} </div>
+      <div class="date">${element.date} </div>
+      <div class="mensaje">${element.message}</div>
+    </div>
+    `
+    console.log(element)
+  })
 
-document.getElementById("listItemCartBtn").addEventListener("click", ev => {
-    fetch(`http://localhost:8080/api/carrito/${idCartList.value}/productos/`, {
-        method: 'GET'
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            document.querySelector('#itemCartList').innerHTML = templateListaProductos(data)
-            idCartList.value = ''
-        })
-})
-
-document.getElementById("deleteCartBtn").addEventListener("click", ev => {
-    fetch(`http://localhost:8080/api/carrito/${idCartDel.value}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'text/plain'
-        }
-    })
-        .then((response) => response.text())
-        .then((text) => {
-            alert('Carrito ' + idCartDel.value + ' borrado.')
-            idCartDel.value = ''
-            socket.emit('newCart')
-        })
-})
-
-document.getElementById("deleteItemCartBtn").addEventListener("click", ev => {
-    fetch(`http://localhost:8080/api/carrito/${idProdCartDel.value}/productos/${idProdDel.value}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'text/plain'
-        }
-    })
-        .then((response) => response.text())
-        .then((text) => {
-            console.log(text)
-            idProdDel.value = ''
-        })
+  document.querySelector('#chat').innerHTML = htmlChatToRender
 })

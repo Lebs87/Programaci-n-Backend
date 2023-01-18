@@ -1,6 +1,5 @@
 const express = require('express')
-const products = require('../api/productsClass')
-const user = require('../user/user')
+const products = require('../class/productsClass')
 const { Router } = express
 const productRouter = Router()
 
@@ -10,52 +9,35 @@ productRouter.get('/productos', async (req, res) => {
 })
 
 productRouter.get('/productos/:id', async (req, res) => {
-  const id = req.params.id
-  const product = await products.getById(id)
-  product ? res.json(product)
-    : res.status(404).send({ error: 'producto no encontrado' })
+  const id = Number(req.params.id)
+  const product = await products.getById( id )
+  product ? res.json( product )
+    : res.status(404).send({ error: 'Producto no encontrado'})
 })
 
 productRouter.post('/productos', async (req, res) => {
-  if (user.administrador) {
-    const productToAdd = req.body
-    await products.save(productToAdd)
-    res.redirect('/')
-  } else {
-    res.status(403).send({ error: -1, descripcion: 'ruta /productos metodo POST no autorizado' })
-  }
+  const productToAdd = req.body
+  await products.add( productToAdd )
+  res.redirect('/')
 })
 
 productRouter.put('/productos/:id', async (req, res) => {
-  if (user.administrador) {
-    const id = req.params.id
-    const productToModify = req.body
-    let allProducts = await products.getAll()
-    const index = allProducts.findIndex(item => item.id === id)
-    if (index !== -1) {
-      allProducts.splice(index, 1, { ...productToModify })
-      products.saveFile(allProducts)
-      res.send({ productToModify })
-    } else {
-      res.status(404).send({ error: 'id no valido' })
-    }
+  const id = Number(req.params.id)
+  const productToModify = req.body
+
+  if(await products.modifyById( id, productToModify )){
+    res.send({ message: 'Producto modificado'})
   } else {
-    res.status(403).send({ error: -1, descripcion: 'ruta /productos/id metodo PUT no autorizado' })
+    res.status(404).send({ error: 'Producto no encontrado'})
   }
 })
 
 productRouter.delete('/productos/:id', async (req, res) => {
-  if (user.administrador) {
-    const id = req.params.id
-    const productToDelete = await products.getById(id)
-    if (productToDelete) {
-      await products.deleteById(id)
-      res.send({ borrado: productToDelete })
-    } else {
-      res.status(404).send({ error: 'producto no encontrado' })
-    }
+  const id = req.params.id
+  if (await products.deleteById(id)) {
+    res.send({ message: 'Producto borrado'})
   } else {
-    res.status(403).send({ error: -1, descripcion: 'ruta /productos/id metodo DELETE no autorizado' })
+    res.status(404).send({ error: 'Producto no encontrado'})
   }
 })
 
