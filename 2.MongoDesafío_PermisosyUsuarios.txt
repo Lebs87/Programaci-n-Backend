@@ -1,0 +1,604 @@
+Microsoft Windows [Versión 10.0.22000.1455]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\Daniela>mongos
+BadValue: error: no args for --configdb
+try 'mongos --help' for more information
+
+C:\Users\Daniela>mongosh
+Current Mongosh Log ID: 63d2e078967b76fbdd9c3f9d
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> exit
+
+C:\Users\Daniela>mongosh -u pepe
+Enter password: ******
+Current Mongosh Log ID: 63d2e0f90c3fc26330094bd7
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+MongoServerError: Authentication failed.
+
+C:\Users\Daniela>mongosh -u pepe
+Enter password: ******
+Current Mongosh Log ID: 63d2e1106517280b4b177f4d
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+MongoServerError: Authentication failed.
+
+C:\Users\Daniela>mongosh -u "pepe"
+Enter password: ********
+Current Mongosh Log ID: 63d2e14ece2e99fd8fc5e36d
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+MongoServerError: Authentication failed.
+
+C:\Users\Daniela>mongosh
+Current Mongosh Log ID: 63d2e1f581ba23953c363c58
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> use admin
+switched to db admin
+admin> db.createUser({user: "pepe", pwd: "asd456", roles: [{role: "read", db:"ecommerce"}]})
+{ ok: 1 }
+admin> exit
+
+C:\Users\Daniela>mongosh -u pepe
+Enter password: ******
+Current Mongosh Log ID: 63d2e5de96bc4332e03f3a9e
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> show dbs
+admin      180.00 KiB
+config     108.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+test> use ecommerce
+switched to db ecommerce
+ecommerce> db.ecommerce.find()
+
+ecommerce> show dbs
+admin      180.00 KiB
+config     108.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+ecommerce>  db.ecommerce.find({})
+
+ecommerce> show collections
+mensajes
+productos
+ecommerce> db.productos.find({})
+[
+  {
+    _id: ObjectId("63d2b07189d2dbbbe3eb284a"),
+    id: 3,
+    title: 'Colador de Pasta tipo C',
+    price: 1290,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b07889d2dbbbe3eb284b"),
+    id: 4,
+    title: 'Colador de Pasta tipo D',
+    price: 1590,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b07b89d2dbbbe3eb284c"),
+    id: 5,
+    title: 'Colador de Pasta tipo E',
+    price: 2290,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b0ee89d2dbbbe3eb284d"),
+    id: 6,
+    title: 'Colador de Pasta tipo F',
+    price: 2590,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b0ff89d2dbbbe3eb284e"),
+    id: 7,
+    title: 'Colador de Pasta tipo G',
+    price: 3290,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b10f89d2dbbbe3eb284f"),
+    id: 8,
+    title: 'Colador de Pasta tipo H',
+    price: 3590,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b12689d2dbbbe3eb2850"),
+    id: 9,
+    title: 'Colador de Pasta tipo I',
+    price: 4290,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  },
+  {
+    _id: ObjectId("63d2b13a89d2dbbbe3eb2851"),
+    id: 10,
+    title: 'Colador de Pasta tipo J',
+    price: 4590,
+    thumbnail: 'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+    stock: 100
+  }
+]
+ecommerce> exit
+
+C:\Users\Daniela>mongosh -- auth -u pepe
+Error:   Error parsing command line: unrecognized option: -u
+
+  $ mongosh [options] [db address] [file names (ending in .js or .mongodb)]
+
+  Options:
+
+    -h, --help                                 Show this usage information
+    -f, --file [arg]                           Load the specified mongosh script
+        --host [arg]                           Server to connect to
+        --port [arg]                           Port to connect to
+        --version                              Show version information
+        --verbose                              Increase the verbosity of the output of the shell
+        --quiet                                Silence output from the shell during the connection process
+        --shell                                Run the shell after executing files
+        --nodb                                 Don't connect to mongod on startup - no 'db address' [arg] expected
+        --norc                                 Will not run the '.mongoshrc.js' file on start up
+        --eval [arg]                           Evaluate javascript
+        --json[=canonical|relaxed]             Print result of --eval as Extended JSON, including errors
+        --retryWrites[=true|false]             Automatically retry write operations upon transient network errors (Default: true)
+
+  Authentication Options:
+
+    -u, --username [arg]                       Username for authentication
+    -p, --password [arg]                       Password for authentication
+        --authenticationDatabase [arg]         User source (defaults to dbname)
+        --authenticationMechanism [arg]        Authentication mechanism
+        --awsIamSessionToken [arg]             AWS IAM Temporary Session Token ID
+        --gssapiServiceName [arg]              Service name to use when authenticating using GSSAPI/Kerberos
+        --sspiHostnameCanonicalization [arg]   Specify the SSPI hostname canonicalization (none or forward, available on Windows)
+        --sspiRealmOverride [arg]              Specify the SSPI server realm (available on Windows)
+
+  TLS Options:
+
+        --tls                                  Use TLS for all connections
+        --tlsCertificateKeyFile [arg]          PEM certificate/key file for TLS
+        --tlsCertificateKeyFilePassword [arg]  Password for key in PEM file for TLS
+        --tlsCAFile [arg]                      Certificate Authority file for TLS
+        --tlsAllowInvalidHostnames             Allow connections to servers with non-matching hostnames
+        --tlsAllowInvalidCertificates          Allow connections to servers with invalid certificates
+        --tlsCertificateSelector [arg]         TLS Certificate in system store (Windows and macOS only)
+        --tlsCRLFile [arg]                     Specifies the .pem file that contains the Certificate Revocation List
+        --tlsDisabledProtocols [arg]           Comma separated list of TLS protocols to disable [TLS1_0,TLS1_1,TLS1_2]
+        --tlsUseSystemCA                       Load the operating system trusted certificate list
+        --tlsFIPSMode                          Enable the system TLS library's FIPS mode
+
+  API version options:
+
+        --apiVersion [arg]                     Specifies the API version to connect with
+        --apiStrict                            Use strict API version mode
+        --apiDeprecationErrors                 Fail deprecated commands for the specified API version
+
+  FLE Options:
+
+        --awsAccessKeyId [arg]                 AWS Access Key for FLE Amazon KMS
+        --awsSecretAccessKey [arg]             AWS Secret Key for FLE Amazon KMS
+        --awsSessionToken [arg]                Optional AWS Session Token ID
+        --keyVaultNamespace [arg]              database.collection to store encrypted FLE parameters
+        --kmsURL [arg]                         Test parameter to override the URL of the KMS endpoint
+
+  DB Address Examples:
+
+        foo                                    Foo database on local machine
+        192.168.0.5/foo                        Foo database on 192.168.0.5 machine
+        192.168.0.5:9999/foo                   Foo database on 192.168.0.5 machine on port 9999
+        mongodb://192.168.0.5:9999/foo         Connection string URI can also be used
+
+  File Names:
+
+        A list of files to run. Files must end in .js and will exit after unless --shell is specified.
+
+  Examples:
+
+        Start mongosh using 'ships' database on specified connection string:
+        $ mongosh mongodb://192.168.0.5:9999/ships
+
+  For more information on usage: https://docs.mongodb.com/mongodb-shell.
+
+C:\Users\Daniela>mongosh -- auth
+Current Mongosh Log ID: 63d2eb0925c25eb7033c771a
+Connecting to:          mongodb://127.0.0.1:27017/auth?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+auth>  show dbs
+admin      180.00 KiB
+config     108.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+auth> exit
+
+C:\Users\Daniela>mongosh --auth
+Error:   Error parsing command line: unrecognized option: --auth
+
+  $ mongosh [options] [db address] [file names (ending in .js or .mongodb)]
+
+  Options:
+
+    -h, --help                                 Show this usage information
+    -f, --file [arg]                           Load the specified mongosh script
+        --host [arg]                           Server to connect to
+        --port [arg]                           Port to connect to
+        --version                              Show version information
+        --verbose                              Increase the verbosity of the output of the shell
+        --quiet                                Silence output from the shell during the connection process
+        --shell                                Run the shell after executing files
+        --nodb                                 Don't connect to mongod on startup - no 'db address' [arg] expected
+        --norc                                 Will not run the '.mongoshrc.js' file on start up
+        --eval [arg]                           Evaluate javascript
+        --json[=canonical|relaxed]             Print result of --eval as Extended JSON, including errors
+        --retryWrites[=true|false]             Automatically retry write operations upon transient network errors (Default: true)
+
+  Authentication Options:
+
+    -u, --username [arg]                       Username for authentication
+    -p, --password [arg]                       Password for authentication
+        --authenticationDatabase [arg]         User source (defaults to dbname)
+        --authenticationMechanism [arg]        Authentication mechanism
+        --awsIamSessionToken [arg]             AWS IAM Temporary Session Token ID
+        --gssapiServiceName [arg]              Service name to use when authenticating using GSSAPI/Kerberos
+        --sspiHostnameCanonicalization [arg]   Specify the SSPI hostname canonicalization (none or forward, available on Windows)
+        --sspiRealmOverride [arg]              Specify the SSPI server realm (available on Windows)
+
+  TLS Options:
+
+        --tls                                  Use TLS for all connections
+        --tlsCertificateKeyFile [arg]          PEM certificate/key file for TLS
+        --tlsCertificateKeyFilePassword [arg]  Password for key in PEM file for TLS
+        --tlsCAFile [arg]                      Certificate Authority file for TLS
+        --tlsAllowInvalidHostnames             Allow connections to servers with non-matching hostnames
+        --tlsAllowInvalidCertificates          Allow connections to servers with invalid certificates
+        --tlsCertificateSelector [arg]         TLS Certificate in system store (Windows and macOS only)
+        --tlsCRLFile [arg]                     Specifies the .pem file that contains the Certificate Revocation List
+        --tlsDisabledProtocols [arg]           Comma separated list of TLS protocols to disable [TLS1_0,TLS1_1,TLS1_2]
+        --tlsUseSystemCA                       Load the operating system trusted certificate list
+        --tlsFIPSMode                          Enable the system TLS library's FIPS mode
+
+  API version options:
+
+        --apiVersion [arg]                     Specifies the API version to connect with
+        --apiStrict                            Use strict API version mode
+        --apiDeprecationErrors                 Fail deprecated commands for the specified API version
+
+  FLE Options:
+
+        --awsAccessKeyId [arg]                 AWS Access Key for FLE Amazon KMS
+        --awsSecretAccessKey [arg]             AWS Secret Key for FLE Amazon KMS
+        --awsSessionToken [arg]                Optional AWS Session Token ID
+        --keyVaultNamespace [arg]              database.collection to store encrypted FLE parameters
+        --kmsURL [arg]                         Test parameter to override the URL of the KMS endpoint
+
+  DB Address Examples:
+
+        foo                                    Foo database on local machine
+        192.168.0.5/foo                        Foo database on 192.168.0.5 machine
+        192.168.0.5:9999/foo                   Foo database on 192.168.0.5 machine on port 9999
+        mongodb://192.168.0.5:9999/foo         Connection string URI can also be used
+
+  File Names:
+
+        A list of files to run. Files must end in .js and will exit after unless --shell is specified.
+
+  Examples:
+
+        Start mongosh using 'ships' database on specified connection string:
+        $ mongosh mongodb://192.168.0.5:9999/ships
+
+  For more information on usage: https://docs.mongodb.com/mongodb-shell.
+
+C:\Users\Daniela>mongosh
+Current Mongosh Log ID: 63d2f3d0e93c104680fc7af2
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> exit
+
+C:\Users\Daniela>mongosh -- auth
+Current Mongosh Log ID: 63d2f3de3ae77662b5ded124
+Connecting to:          mongodb://127.0.0.1:27017/auth?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+auth> exit
+
+C:\Users\Daniela>mongosh
+Current Mongosh Log ID: 63d2f407286322374cd75937
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> exit
+
+C:\Users\Daniela>mongosh -u pepe -p asd456 --authenticationDatabase ecommerce
+Current Mongosh Log ID: 63d3297b4cf30ee1235a8fc9
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&authSource=ecommerce&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> show dbs
+admin      180.00 KiB
+config      84.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+test> show users
+[]
+test> use ecommerce
+switched to db ecommerce
+ecommerce> show users
+[
+  {
+    _id: 'ecommerce.pepe',
+    userId: new UUID("0ae081ce-3679-48b5-b0c2-2195742e83f9"),
+    user: 'pepe',
+    db: 'ecommerce',
+    roles: [ { role: 'read', db: 'ecommerce' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+ecommerce> db.createUser({user: "luis", pwd: "asd456", roles: ["read"]})
+{ ok: 1 }
+ecommerce> show users
+[
+  {
+    _id: 'ecommerce.luis',
+    userId: new UUID("5d840a39-1352-4413-a8ae-3a6b4b2315eb"),
+    user: 'luis',
+    db: 'ecommerce',
+    roles: [ { role: 'read', db: 'ecommerce' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  },
+  {
+    _id: 'ecommerce.pepe',
+    userId: new UUID("0ae081ce-3679-48b5-b0c2-2195742e83f9"),
+    user: 'pepe',
+    db: 'ecommerce',
+    roles: [ { role: 'read', db: 'ecommerce' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+ecommerce> exit
+
+C:\Users\Daniela>mongosh -u pepe -p asd456
+Current Mongosh Log ID: 63d32fb3acb987235dcaa750
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-01-26T10:13:17.890-03:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> show dbs
+admin      180.00 KiB
+config     108.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+test> show users
+[]
+test> use ecommerce
+switched to db ecommerce
+ecommerce> show dbs
+admin      180.00 KiB
+config     108.00 KiB
+ecommerce  144.00 KiB
+local       40.00 KiB
+mibase      80.00 KiB
+ecommerce> show users
+[
+  {
+    _id: 'ecommerce.luis',
+    userId: new UUID("5d840a39-1352-4413-a8ae-3a6b4b2315eb"),
+    user: 'luis',
+    db: 'ecommerce',
+    roles: [ { role: 'read', db: 'ecommerce' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  },
+  {
+    _id: 'ecommerce.pepe',
+    userId: new UUID("0ae081ce-3679-48b5-b0c2-2195742e83f9"),
+    user: 'pepe',
+    db: 'ecommerce',
+    roles: [ { role: 'read', db: 'ecommerce' } ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+ecommerce> db.productos.insertOne({ title: "Articulo 3" });
+{
+  acknowledged: true,
+  insertedId: ObjectId("63d33020bb9fd6ec4cb0a3f8")
+}
+ecommerce>
