@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Lebs87/Programaci-n-Backend#readme",
   "dependencies": {
+    "firebase-admin": "^11.5.0",
     "mongoose": "^6.9.0"
   }
 }
