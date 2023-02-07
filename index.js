@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
-import connecToDb from "./config/connectToDb.js";
-import read from "./controler/read.js";
-//import update from "./controler/update.js";
-//import create from "./controler/create.js";
+const {mongoose} = require('mongoose');
+const connectToDb = require('./config/connectToDb.js');
+const read = require('./controler/read.js')
+const create = require('./controler/create.js')
+const update = require ('./controler/update.js')
 
-connecToDb()
+connectToDb()
 /* -----PARA AGREGAR LOS REGISTROS EN LA BASE DE DATOS ------*/
-//.then(async ()=> await create())
+.then(async ()=> await create())
 /* -----PARA LEER LOS REGISTROS EN LA BASE DE DATOS ------*/
-.then(async ()=> await read())
+//.then(async ()=> await read())
 /* -----PARA ACTUALIZAR LOS REGISTROS EN LA BASE DE DATOS ------*/
 //.then(async () => await update())
 

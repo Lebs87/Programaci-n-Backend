@@ -1,4 +1,4 @@
-import Products from "../model/products.js"
+const Products = require('../model/products.js')
 
 const update = async ()=> {
 /* -----UPDATE DE UN SOLO PRODUCTO -----*/ 
@@ -19,4 +19,4 @@ const update = async ()=> {
     console.log({ deleteMasivo }) */
 };
 
-export default update;
+module.exports = update;

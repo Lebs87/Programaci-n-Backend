@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+//import mongoose from "mongoose";
+const {mongoose} = require('mongoose');
 
 let isConnected;
 
@@ -12,4 +13,5 @@ const connecToDb = async () => {
     console.log('Conexión existente');
     return;
 }
-export default connecToDb
+//export default connecToDb
+module.exports = connecToDb

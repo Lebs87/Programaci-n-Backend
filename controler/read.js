@@ -1,5 +1,4 @@
-import Products from "../model/products.js"
-
+const Products = require('../model/products.js')
 const read = async () => {
     /* ---Ordenar de forma Ascendente + Traer el tiempo de creación del primer arreglo--- */
         const sortedProducts = await Products.find({}).sort({ code: 1 });
@@ -20,4 +19,4 @@ const read = async () => {
     //console.log(JSON.stringify(sortedProducts, null, 2))
 };
 
-export default read;
+module.exports = read;

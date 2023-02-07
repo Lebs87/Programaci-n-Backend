@@ -16,8 +16,8 @@ const create = async ()=>{
 export default create; */
 
 /* ----- Iterar sobre el array de productos, cuando no queremos hacer carga masiva ----- */
-import Products from "../model/products.js";
-
+//import Products from "../model/products.js";
+const Products = require('../model/products.js')
 const create = async ()=>{
     const ProductsToAdd = [
         {title: 'Colador de Pasta 3', description: 'Colador de Pasta 3', code: '1117', price: 4400, stock: 10, thumbnail:'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png'},
@@ -33,4 +33,5 @@ const promises = ProductsToAdd.map(product => {
 });
 await Promise.all(promises);
 };
-export default create;
+//export default create;
+module.exports = create;
