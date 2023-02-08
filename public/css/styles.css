@@ -1,0 +1,26 @@
+.user{
+    display: inline;
+    color: rgb(87, 87, 197);
+  }
+  
+  .date{
+    display: inline;
+    color: rgb(185, 11, 69);
+  }
+  
+  .mensaje{
+    display: inline;
+    color: rgb(25, 179, 89);
+  }
+
+  .bgblack{
+    background-color: black;
+  }
+
+  .navText{
+    color: blanchedalmond;
+    list-style: none;
+    text-decoration: none;
+    margin: 1rem;
+    padding: 3rem 0.1rem;
+  }
