@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +16,7 @@
     <script src="js/templates.js"></script>
     <script defer src="js/main.js"></script>
 </head>
+
 <body class="container bgblack">
     <nav class="navbar navbar-expand-lg">
         <ul class="navbar-nav mx-auto alert alert-danger text-center">
@@ -26,57 +28,153 @@
             </li>
         </ul>
     </nav>
+    <div id="soloAdministrador"></div>
     <div class="container">
         <div class="alert alert-secondary text-center" role="alert">
             Ingrese el producto
         </div>
     </div>
-    <form id="formulario" class="container" action="/api/productos" method="POST">
-        <div class="form-group">
-            <label for="name">Nombre de producto</label>
-            <input type="text" class="form-control" id="name" name="title">
-        </div>
-        <div class="form-group">
-            <label for="price">Precio</label>
-            <input type="number" class="form-control" id="price" name="price">
-        </div>
-        <div class="form-group">
-            <label for="picture">Foto del producto</label>
-            <input type="text" class="form-control" id="picture" name="thumbnail" aria-describedby="pictureHelp">
-            <div id="pictureHelp" class="form-text">URL del Producto</div>
-        </div>
-        <button type="submit" class="btn btn-danger m-2">Guardar</button>
-    </form>
-    <div id="tablaProd"></div>
     <div class="container">
-        <div class="alert alert-secondary text-center m-2" role="alert">
-            Tabla de productos
+        <div class="row mb-3">
+            <label for="idm" class="form-label">Id del producto</label>
+            <input type="text" class="col form-control" id="idm" name="id">
+            <button id="idProdToModifyBtn" type="" class="col mx-1 btn btn-secondary">Confirmar id de producto a
+                modificar</button>
         </div>
     </div>
-    <div class="">
-        <div id="tabla"></div>
-        <div id="tablaChat"></div>
-        <div class="container">
-            <div class="alert alert-secondary text-center m-2" role="alert">
-                Mensajes
+
+
+    <form id="formulariom" class="container" action="/api/productos" method="">
+        <div class="mb-3">
+            <label for="namem" class="form-label">Nombre del producto</label>
+            <input type="text" class="form-control" id="namem" name="">
+        </div>
+        <div class="mb-3">
+            <label for="descriptionm" class="form-label">Descripcion</label>
+            <input type="text" class="form-control" id="descriptionm" name="descriptionm">
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="mb-3 col">
+                <label for="codem" class="form-label">Codigo</label>
+                <input type="number" class="form-control" id="codem" name="">
             </div>
-            <div class="row">
-                <label for="userEmail" class="form-label">Usuario</label>
-                <div class="col mb-3">
-                    <input type="email" class="form-control" id="userEmail" aria-describedby="pictureHelp">
-                    <div id="pictureHelp" class="form-text">Ingrese su email</div>
-                </div>
-                <div id="chat"></div>
-                <div class="col mb-3">
-                    <input type="text" class="form-control" id="userMsj" aria-describedby="pHelp">
-                    <div id="pHelp" class="form-text">Comentario</div>
-                </div>
-                <div class="col">
-                    <button id="sendBtn" type="" class="btn btn-danger">Enviar Mensaje</button>
-                </div>
+            <div class="mb-3 col">
+                <label for="pricem" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="pricem" name="pricem">
             </div>
-            <hr>
+            <div class="mb-3 col">
+                <label for="stockm" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stockm" name="stockm">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="picturem" class="form-label">Foto del producto</label>
+            <input type="text" class="form-control" id="picturem" name="thumbnailm" aria-describedby="pictureHelpm">
+            <div id="pictureHelpm" class="form-text">URL de la foto</div>
+        </div>
+        <button id="modifyOkBtn" type="" class="btn btn-secondary">Guardar</button>
+    </form>
+
+
+    <br>
+    <br id="tablaProd">
+
+    <div class="container">
+        <div class="alert alert-secondary text-center" role="alert">
+            PRODUCTOS
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row d-flex justify-content-center" id="productos"></div>
+    </div>
+
+    <br>
+
+    <div class="container">
+        <div class="alert alert-secondary text-center" role="alert">
+            CARRITOS
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row d-flex justify-content-center" id="carritos"></div>
+    </div>
+
+
+    <br>
+
+    <div class="container">
+        <div class="alert alert-secondary text-center" role="alert">
+            OPERACIONES CON CARRITOS
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div id="" class="row d-flex justify-content-center">
+            <div class="col">
+                <button id="newCartBtn" type="" class="btn btn-secondary">Nuevo carrito</button>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="" class="row d-flex justify-content-center">
+            <div class="col">
+                <input type="text" class="form-control" id="idProdNew" aria-describedby="pHelp3">
+                <div id="pHelp3" class="form-text">ID producto a agregar</div>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="idProdCartNew" aria-describedby="pHelp4">
+                <div id="pHelp4" class="form-text">ID del carrito</div>
+            </div>
+            <div class="col">
+                <button id="newItemCartBtn" type="" class="btn btn-secondary">Agregar producto</button>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="" class="row d-flex justify-content-center">
+            <div class="col">
+                <input type="text" class="form-control" id="idCartList" aria-describedby="pHelp4">
+                <div id="pHelp4" class="form-text">ID del carrito</div>
+            </div>
+            <div class="col">
+                <button id="listItemCartBtn" type="" class="btn btn-secondary">Ver productos del carrito</button>
+            </div>
+        </div>
+        <div id="itemCartList" class="row"></div>
+
+        <br>
+
+        <div id="" class="row d-flex justify-content-center ">
+            <div class="col">
+                <input type="text" class="form-control" id="idCartDel" aria-describedby="pHelp">
+                <div id="pHelp" class="form-text">ID de carrito a borrar</div>
+            </div>
+            <div class="col">
+                <button id="deleteCartBtn" type="" class="btn btn-secondary">Borrar carrito</button>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="" class="row d-flex justify-content-center ">
+            <div class="col">
+                <input type="text" class="form-control" id="idProdDel" aria-describedby="pHelp1">
+                <div id="pHelp1" class="form-text">ID producto a borrar</div>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="idProdCartDel" aria-describedby="pHelp2">
+                <div id="pHelp2" class="form-text">ID del carrito</div>
+            </div>
+            <div class="col">
+                <button id="deleteItemCartBtn" type="" class="btn btn-secondary">Borrar producto</button>
+            </div>
         </div>
     </div>
 </body>
+
 </html>

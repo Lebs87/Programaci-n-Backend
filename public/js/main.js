@@ -1,87 +1,167 @@
-const socket = io.connect();
+const socket = io.connect()
+const administrador = true
 
 function validateEmail(email) {
-    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    if (email.match(mailformat)) {
-        return true
-    } else {
-        alert("Dirección de correo invalida");
-        return false
-    }
+  const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+  if (email.match(mailformat)) {
+    return true
+  } else {
+    alert("You have entered an invalid email address!");
+    return false
+  }
 }
 
-const formulario = document.getElementById('formulario')
-formulario.addEventListener('submit', e => {
+function validateProducto(producto) {
+  return Object.values(producto).includes('')
+}
+
+if (administrador) {
+
+  const htmlNewProductForm = templateForm()
+
+  document.querySelector('#soloAdministrador').innerHTML = htmlNewProductForm
+
+  const formulario = document.getElementById('formulario')
+  formulario.addEventListener('submit', e => {
     e.preventDefault()
     const producto = {
-        title: formulario[0].value,
-        price: formulario[1].value,
-        thumbnail: formulario[2].value
+      title: formulario[0].value,
+      description: formulario[1].value,
+      code: Number(formulario[2].value),
+      price: Number(formulario[3].value),
+      stock: Number(formulario[4].value),
+      thumbnail: formulario[5].value
     }
-    socket.emit('update', producto)
-    formulario.reset()
-})
+    if (validateProducto(producto)) {
+      alert('Complete todos los datos del producto')
 
-socket.on('productos', data => {
-  let productos = data
- 
-  let htmlToRender = `
-  <table class="table container">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Foto</th>
-      </tr>
-    </thead>
-    </tbody>`
-  
-  productos.forEach(( element ) => {
-    htmlToRender = htmlToRender + `
-    <tr>
-      <th scope="row">${element.id}</th>
-      <td>${element.title}</td>
-      <td>${element.price}</td>
-      <td><img src=${element.thumbnail} style="max-width: 50px; height: auto;"</td>
-    </tr>` 
-  })
-  
-  htmlToRender = htmlToRender + '</tbody></table>'
-  document.querySelector('#tabla').innerHTML = htmlToRender
-})
-
-const userEmail = document.getElementById("userEmail")
-const userMensaje = document.getElementById("userMsj")
-
-document.getElementById("sendBtn").addEventListener("click", ev => {
-  if ( validateEmail(userEmail.value) ) {
-    if ( userMensaje.value ){
-      socket.emit('newMsj', {
-        user: userEmail.value,
-        message: userMensaje.value
-       })
-       userMensaje.value = ''
     } else {
-      alert("Ingrese un mensaje!")
-    }
-  }
-})
+      socket.emit('update', producto)
 
-socket.on('mensajes', data => {
-  
-  let htmlChatToRender = ``
-  
-  data.forEach(( element ) => {
-    htmlChatToRender = htmlChatToRender + `
-    <div>
-      <div class="user">User: ${element.user} </div>
-      <div class="date">${element.date} </div>
-      <div class="mensaje">${element.message}</div>
-    </div>
-    `
-    console.log(element)
+    }
   })
 
-  document.querySelector('#chat').innerHTML = htmlChatToRender
+}
+
+const namem = document.getElementById("namem")
+const idm = document.getElementById("idm")
+const descriptionm = document.getElementById("descriptionm")
+const codem = document.getElementById("codem")
+const pricem = document.getElementById("pricem")
+const stockm = document.getElementById("stockm")
+const picturem = document.getElementById("picturem")
+
+document.getElementById("idProdToModifyBtn").addEventListener("click", ev => {
+  ev.preventDefault()
+  fetch(`http://localhost:8080/api/productos/${idm.value}`, {
+    method: 'GET'
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      namem.value = data[0].title
+      descriptionm.value = data[0].description
+      codem.value = data[0].code
+      pricem.value = data[0].price
+      stockm.value = data[0].stock
+      picturem.value = data[0].thumbnail
+    })
+
+  document.getElementById("modifyOkBtn").addEventListener("click", eve => {
+    eve.preventDefault()
+    fetch(`http://localhost:8080/api/productos/${idm.value}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        title: namem.value,
+        description: descriptionm.value,
+        code: Number(codem.value),
+        price: Number(pricem.value),
+        stock: Number(stockm.value),
+        thumbnail: picturem.value
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+  })
+
+})
+
+socket.on('productos', productos => {
+  document.querySelector('#productos').innerHTML = templateProductos(productos)
+})
+
+socket.on('carritos', carritos => {
+  document.querySelector('#carritos').innerHTML = templateCarritos(carritos)
+})
+
+const idProdNew = document.getElementById("idProdNew")
+const idProdCartNew = document.getElementById("idProdCartNew")
+const idCartList = document.getElementById("idCartList")
+const idCartDel = document.getElementById("idCartDel")
+const idProdDel = document.getElementById("idProdDel")
+const idProdCartDel = document.getElementById("idProdCartDel")
+
+
+document.getElementById("newCartBtn").addEventListener("click", ev => {
+  fetch('http://localhost:8080/api/carrito/', {
+    method: 'POST'
+  })
+    .then((response) => response.text())
+    .then((text) => {
+      alert('Se ha creado carrito')
+      socket.emit('newCart')
+    })
+})
+
+document.getElementById("newItemCartBtn").addEventListener("click", ev => {
+  fetch(`http://localhost:8080/api/carrito/${idProdCartNew.value}/productos/${idProdNew.value}`, {
+    method: 'POST'
+  })
+    .then((response) => response.text())
+    .then((text) => {
+      alert(text)
+      idProdNew.value = ''
+    })
+})
+
+document.getElementById("listItemCartBtn").addEventListener("click", ev => {
+  fetch(`http://localhost:8080/api/carrito/${idCartList.value}/productos/`, {
+    method: 'GET'
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.querySelector('#itemCartList').innerHTML = templateListaProductos(data)
+      idCartList.value = ''
+    })
+})
+
+document.getElementById("deleteCartBtn").addEventListener("click", ev => {
+  fetch(`http://localhost:8080/api/carrito/${idCartDel.value}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'text/plain'
+    }
+  })
+    .then((response) => response.text())
+    .then((text) => {
+      alert('Carrito ' + idCartDel.value + ' borrado.')
+      idCartDel.value = ''
+      socket.emit('newCart')
+    })
+})
+
+document.getElementById("deleteItemCartBtn").addEventListener("click", ev => {
+  fetch(`http://localhost:8080/api/carrito/${idProdCartDel.value}/productos/${idProdDel.value}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'text/plain'
+    }
+  })
+    .then((response) => response.text())
+    .then((text) => {
+      console.log(text)
+      idProdDel.value = ''
+    })
 })
