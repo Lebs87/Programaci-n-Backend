@@ -1,5 +1,6 @@
 const express = require('express')
-const products = require('../class/productsClass')
+const { products }  = require('../class/productContainer')
+const { mock5 } = require('../class/mockFaker')
 const { Router } = express
 const productRouter = Router()
 
@@ -39,6 +40,11 @@ productRouter.delete('/productos/:id', async (req, res) => {
   } else {
     res.status(404).send({ error: 'Producto no encontrado'})
   }
+})
+
+productRouter.get('/productos-test', async (req, res) => {
+  const allProducts = await mock5.getAll()
+  res.json( allProducts )
 })
 
 module.exports = productRouter
