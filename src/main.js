@@ -31,11 +31,9 @@ io.on('connection', async socket => {
   socket.on('newCart', async () => {
     socket.emit('carritos', await carts.getAll())
   })
-  
 })
 
 /* ----------- API REST ROUTER--------- */
-
 app.use('/api', productRouter)
 app.use('/api', cartRouter)
 app.use(function(req, res) {

@@ -2,7 +2,6 @@ const connectToDd = require('../../DB/config/connectToMongo')
 const Container = require('../../containers/containerMongoDb')
 const { productModel } = require('../../DB/model/mongoDbModel')
 
-
 class Product extends Container {
 
   async add( item ) {
@@ -18,7 +17,6 @@ class Product extends Container {
     }
   }
 
-  
   async modifyById( id, item ) {  
     try {
       await connectToDd()
@@ -30,10 +28,7 @@ class Product extends Container {
       return false
     }
   }
-
-
 }
-
 
 const products = new Product( productModel )
 

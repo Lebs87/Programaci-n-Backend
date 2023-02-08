@@ -2,7 +2,6 @@ const connectToDd = require('../../DB/config/connectToMongo')
 const Container = require('../../containers/containerMongoDb')
 const { cartModel } = require('../../DB/model/mongoDbModel')
 
-
 class Cart extends Container {
 
   async newCart( items ) {
@@ -18,7 +17,7 @@ class Cart extends Container {
     }
   }
 
-  async addItem( id, item ) { //Agrega un producto al carrito indicado 
+  async addItem( id, item ) {
     try{
       await connectToDd()
       await this.schema.findOneAndUpdate(
@@ -53,10 +52,7 @@ class Cart extends Container {
       console.log(`Error: ${err}`)
     }
   }
-
-
 }
-
 
 const carts = new Cart( cartModel )
 

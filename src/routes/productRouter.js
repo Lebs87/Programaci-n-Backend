@@ -1,21 +1,15 @@
 const express = require('express')
 const { Router } = express  
 const productRouter = Router() 
-
 const { products } = require('../daos/generalDaos')
 const user = require('../permissions/user')
 const useMongoDb = require('../permissions/dataBaseUse')
 
-
-
-/* ------- router productos -------- */
-/*get productos*/
 productRouter.get('/productos', async (req, res) => {
   const allProducts = await products.getAll()
   res.json( allProducts )
 })
 
-/*get producto segun id*/
 productRouter.get('/productos/:id', async (req, res) => {
   const id = req.params.id
   const product = await products.getById( id )
@@ -23,7 +17,6 @@ productRouter.get('/productos/:id', async (req, res) => {
     : res.status(404).send({ error: 'producto no encontrado'})
 })
 
-/*post producto*/
 productRouter.post('/productos', async (req, res) => {
   if (user.administrador){
     const productToAdd = req.body
@@ -35,20 +28,15 @@ productRouter.post('/productos', async (req, res) => {
   }
 })
 
-
-/*put producto*/
 productRouter.put('/productos/:id', async (req, res) => {
   if (user.administrador){
     const id = req.params.id
     const productToModify = req.body
     let allProducts = await products.getAll()
-
     let index
-
     useMongoDb.useMongoDb ? 
-    index = allProducts.findIndex( item => item.id === id ) : //mongodb
-    index = allProducts.findIndex( item => item._id === id ) //firebase
-
+    index = allProducts.findIndex( item => item.id === id ) :
+    index = allProducts.findIndex( item => item._id === id )
     if ( index !== -1 ) {
       await products.modifyById( id, productToModify )
       res.send({ productToModify })
@@ -59,11 +47,8 @@ productRouter.put('/productos/:id', async (req, res) => {
   } else {
     res.status(403).send({error: -1, descripcion: 'ruta /productos/id metodo PUT no autorizado'})
   }
-
 })
 
-
-/*delete producto*/
 productRouter.delete('/productos/:id', async (req, res) => {
   if (user.administrador){
     const id = req.params.id
@@ -82,6 +67,5 @@ productRouter.delete('/productos/:id', async (req, res) => {
   }
   
 })
-
 
 module.exports = productRouter

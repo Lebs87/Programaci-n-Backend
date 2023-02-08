@@ -1,8 +1,6 @@
 const admin = require('firebase-admin')
 const Container = require('../../containers/containerFirebase')
 
-
-
 class Cart extends Container {
 
   async newCart( doc ) {
@@ -16,7 +14,7 @@ class Cart extends Container {
     }
   }
 
-  async addItem( id, item ) { //Agrega un producto al carrito indicado 
+  async addItem( id, item ) {
     try{
       const db = admin.firestore()
       const docRef = db.collection(this.collection).doc(id)
@@ -57,10 +55,7 @@ class Cart extends Container {
       console.log(`Error: ${err}`)
     }
   }
-
-
 }
-
 
 const carts = new Cart('carts')
 
