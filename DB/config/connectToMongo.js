@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 let isConected
 
 const connectToDd = async () => {
