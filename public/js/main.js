@@ -1,52 +1,33 @@
-const socket = io.connect();
+const socket = io.connect()
 
-function validateEmail(email) {
-  const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-  if (email.match(mailformat)) {
-    return true
+async function main() {
+  const user = await userLogged()
+  if (user !== '') {
+    logged(user)
   } else {
-    alert("Dirección de correo invalida");
-    return false
+    document.querySelector('#sessionUser').innerHTML = loginTemplate()
+    const logName = document.getElementById("logName")
+    document.getElementById("loginBtn").addEventListener("click", ev => {
+      fetch(`http://localhost:8080/session/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: logName.value
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.description)
+        })
+      logged(logName.value)
+    })
   }
 }
 
-const formulario = document.getElementById('formulario')
-formulario.addEventListener('submit', e => {
-  e.preventDefault()
-  const producto = {
-    title: formulario[0].value,
-    price: formulario[1].value,
-    thumbnail: formulario[2].value
-  }
-  socket.emit('update', producto)
-  formulario.reset()
-})
-
 socket.on('productos', data => {
-  let productos = data
-
-  let htmlToRender = `
-  <table class="table container">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Foto</th>
-      </tr>
-    </thead>
-    </tbody>`
-
-  productos.forEach((element) => {
-    htmlToRender = htmlToRender + `
-      <tr>
-        <td>${element.title}</td>
-        <td>${element.price}</td>
-        <td><img src=${element.thumbnail} style="max-width: 50px; height: auto;"</td>
-      </tr>`
-  })
-  htmlToRender = htmlToRender + '</tbody></table>'
-  document.querySelector('#tabla').innerHTML = htmlToRender
+  document.querySelector('#tabla').innerHTML = productsTable(data)
 })
 
 const userEmail = document.getElementById("userEmail")
@@ -60,6 +41,7 @@ const userMensaje = document.getElementById("userMsj")
 document.getElementById("sendBtn").addEventListener("click", ev => {
   if (validateEmail(userEmail.value)) {
     if (userMensaje.value) {
+
       socket.emit('newMsj', {
         author: {
           id: userEmail.value,
@@ -79,16 +61,7 @@ document.getElementById("sendBtn").addEventListener("click", ev => {
 })
 
 socket.on('mensajes', data => {
-  let htmlChatToRender = ``
-  data.forEach((element) => {
-    htmlChatToRender = htmlChatToRender + `
-    <div>
-      <div class="user">User: ${element.user} </div>
-      <div class="date">${element.date} </div>
-      <div class="mensaje">${element.message}</div>
-    </div>
-    `
-    console.log(element)
-  })
-  document.querySelector('#chat').innerHTML = htmlChatToRender
+  document.querySelector('#chat').innerHTML = chatMessages(data)
 })
+
+main()

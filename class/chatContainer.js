@@ -1,35 +1,50 @@
 const connectToDd = require('../DB/config/connectToMongo')
 const { chatModel } = require('../DB/model/mongoDbModel')
-const normalizedData = require('../normalize/normal')
+const { normalizedData, denormalizeData } = require('../normalize/normal')
 
 class Container {
-  constructor( schema ) {
-      this.schema = schema
+  constructor(schema) {
+    this.schema = schema
   }
   async getAll() {
-    try{
+    try {
       await connectToDd()
-      const messagesInDb = await this.schema.findOne ( { chatid: 'chat1'} )
-      return normalizedData( messagesInDb )
-    } catch(err) {
+      const chatInDb = await this.schema.findOne({ chatid: 'chat1' })
+      return normalizedData(chatInDb.chat)
+    } catch (err) {
       console.log(`Error: ${err}`)
     }
   }
- 
-  async add( message ) {
-    try{
+
+  async add(message) {
+    try {
       await connectToDd()
-      const messagesInDb = await this.schema.findOne ( { chatid: 'chat1' } ,
-      { projection: { messages: 1, _id: 0 }} )
-      await this.schema.updateOne( { chatid: 'chat1' } ,
-      { $set: { messages: messagesInDb.push( message) }} )
+      const chatInDb = await this.schema.findOne({ chatid: 'chat1' })
+      const newMsj = chatInDb.chat
+      newMsj.push({
+        user: {
+          email: message.author.id,
+          name: message.author.name,
+          surmame: message.author.surname,
+          age: message.author.age,
+          nickname: message.author.nickname,
+          avatar: message.author.avatar,
+        },
+        message: {
+          timestamp: message.date,
+          text: message.text
+        }
+      })
+      await this.schema.updateOne({ chatid: 'chat1' },
+        { $set: { chat: newMsj } }
+      )
       return
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
     }
   }
 }
 
-const chats = new Container ( chatModel )
+const chats = new Container(chatModel)
 
-module.exports = chats
+module.exports = { chats }
