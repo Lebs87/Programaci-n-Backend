@@ -1,28 +1,38 @@
 const express = require('express')
+const passport = require('passport')
+require('../middlewares/auth')
 const { Router } = express   
 const sessionRouter = Router() 
 
 sessionRouter.get('/', (req, res) => {
-  if (req.session.name) {
-    console.log(req.session.cookie.expires)
-    req.session.cookie.maxAge = 60000
-    console.log(req.session.cookie.expires)
-    res.send({ user: req.session.name })
+  if (req.session.passport) {
+    console.log(req.session)
+    res.status(200).send({ user: req.session.passport.user })
   } else {
-    res.send({ user: '' })
+    res.status(401).send({ user: '' })
   }
 })
 
-sessionRouter.post('/login', async (req, res) => {
-  const user = req.body.user
-  req.session.name = user
-  res.status(200).send({ description: user })
-})
+sessionRouter.post(
+  '/login', 
+  passport.authenticate('login'),
+  function(req, res) {
+     res.status(200).send({ message: 'Autenticación correcta.' });
+  }
+)
+
+sessionRouter.post(
+  '/register',
+  passport.authenticate('register'),
+  function(req, res) {
+    res.status(200).send({ rlt: true, msg: 'Usuario creado correctamente'})
+  }
+)
 
 sessionRouter.post('/logout', async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).send(`error: ${err}`)
+      res.status(500).send(`Error ${500}`)
     } else {
       res.redirect('/')
     }
