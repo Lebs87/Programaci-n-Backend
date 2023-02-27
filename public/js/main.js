@@ -1,33 +1,46 @@
 const socket = io.connect()
 
-async function main() {
+async function main(){
   const user = await userLogged()
-  if (user !== '') {
-    logged(user)
+  if ( user ) {
+    console.log(10, user)
+    logged( user )
   } else {
     document.querySelector('#sessionUser').innerHTML = loginTemplate()
     const logName = document.getElementById("logName")
-    document.getElementById("loginBtn").addEventListener("click", ev => {
-      fetch(`http://localhost:8080/session/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user: logName.value
+    const logPassword = document.getElementById("logPassword")
+    document.getElementById("loginBtn").addEventListener("click", ev => { 
+      if ( validateObject ({ a: logName.value , b: logPassword.value })) {
+        toast('Debe completar todos los datos', "#f75e25", "#ff4000")
+      } else {    
+        fetch(`http://localhost:8080/session/login/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: logName.value,
+            password: logPassword.value
+          })
         })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.description)
+        .then(response => {
+          if( response.status === 401 ){
+            toast("Usuario y/o contrasena incorrectos", "#f75e25", "#ff4000")
+          } else {
+            logged ( logName.value )
+          }
         })
-      logged(logName.value)
-    })
+        .catch(error => {
+          console.error('Se produjo un error: ', error)
+        })
+      }
+
+    })  
   }
 }
 
 socket.on('productos', data => {
-  document.querySelector('#tabla').innerHTML = productsTable(data)
+    document.querySelector('#tabla').innerHTML = productsTable( data )
 })
 
 const userEmail = document.getElementById("userEmail")
@@ -39,9 +52,8 @@ const userAvatar = document.getElementById("userAvatar")
 const userMensaje = document.getElementById("userMsj")
 
 document.getElementById("sendBtn").addEventListener("click", ev => {
-  if (validateEmail(userEmail.value)) {
-    if (userMensaje.value) {
-
+  if ( validateEmail(userEmail.value) ) {
+    if ( userMensaje.value ){
       socket.emit('newMsj', {
         author: {
           id: userEmail.value,
@@ -52,8 +64,8 @@ document.getElementById("sendBtn").addEventListener("click", ev => {
           avatar: userAvatar.value
         },
         text: userMensaje.value
-      })
-      userMensaje.value = ''
+       })
+       userMensaje.value = ''
     } else {
       alert("Ingrese un mensaje!")
     }
@@ -61,7 +73,7 @@ document.getElementById("sendBtn").addEventListener("click", ev => {
 })
 
 socket.on('mensajes', data => {
-  document.querySelector('#chat').innerHTML = chatMessages(data)
+  document.querySelector('#chat').innerHTML = chatMessages( data )
 })
 
 main()
