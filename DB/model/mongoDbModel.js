@@ -15,20 +15,21 @@ const cartSchema = new Schema({
     timestamp: { type: Date, default: Date.now },
     products: { type: Array, required: true }
 })
-/*
+
 const userSchema = new Schema({
   email: { type: String, required: true },
-  name: { type: String, required: true },
+  password: {type: String, required: true }
+  /*name: { type: String, required: true },
   surname: { type: String, required: true },
   age: { type: Number, required: true },
   nickname: { type: String, required: true },
-  avatar: { type: String, required: true }
+  avatar: { type: String, required: true }*/
 })
 
-const messageSchema = new Schema({
+/* const messageSchema = new Schema({
   timestamp: { type: Date, default: Date.now },
   text: { type: String, required: true }
-})*/
+}) */
 
 const chatSchema = new Schema({
   chatid: { type: String, required: true },
@@ -38,5 +39,6 @@ const chatSchema = new Schema({
 const productModel = model('Product', productSchema)
 const cartModel = model('Cart', cartSchema)
 const chatModel = model('Chat', chatSchema)
+const userModel = model('User', userSchema)
 
-module.exports = { productModel, cartModel, chatModel }
+module.exports = { productModel, cartModel, chatModel, userModel }

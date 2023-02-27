@@ -1,6 +1,6 @@
 const connectToDd = require('../DB/config/connectToMongo')
 const { chatModel } = require('../DB/model/mongoDbModel')
-const { normalizedData, denormalizeData } = require('../normalize/normal')
+const { normalizedData } = require('../normalize/normal')
 
 class Container {
   constructor(schema) {
