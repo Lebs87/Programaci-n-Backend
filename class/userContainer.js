@@ -46,7 +46,6 @@ class Container {
 
 }
 
-
 const users = new Container( userModel )
 
 module.exports = { users } 

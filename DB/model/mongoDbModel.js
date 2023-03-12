@@ -26,11 +26,6 @@ const userSchema = new Schema({
   avatar: { type: String, required: true }*/
 })
 
-/* const messageSchema = new Schema({
-  timestamp: { type: Date, default: Date.now },
-  text: { type: String, required: true }
-}) */
-
 const chatSchema = new Schema({
   chatid: { type: String, required: true },
   chat: { type: Array, required: true }
