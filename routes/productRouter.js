@@ -1,6 +1,7 @@
 const express = require('express')
 const { products }  = require('../class/productContainer')
 const { mock5 } = require('../class/mockFaker')
+const { fork } = require('child_process')
 const { Router } = express
 const productRouter = Router()
 
@@ -55,6 +56,15 @@ productRouter.get('/productos-test', async (req, res) => {
   })
   tabla += '</table>'
   res.send(tabla)
+})
+
+productRouter.get('/randoms', async (req, res) => {
+  const numbers = req.query.cant || 10000000
+  const randomNumbersProcess = fork('./api/randomNumbers.js')
+  randomNumbersProcess.on('message', (counts) => {
+    res.json(counts)
+  })
+  randomNumbersProcess.send({ numbers: numbers })
 })
 
 module.exports = productRouter

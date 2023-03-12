@@ -1,6 +1,6 @@
 async function userLogged() {
     let user
-    await fetch(`http://localhost:8080/session`, {
+    await fetch(`http://localhost:${location.port}/session/`, {
         method: 'GET',
     })
         .then((response) => response.json())
@@ -37,7 +37,7 @@ function productLoad() {
 }
 
 async function userLogout(user) {
-    fetch(`http://localhost:8080/session/logout/`, {
+    fetch(`http://localhost:${location.port}/session/logout/`, {
         method: 'POST',
     })
         .then((response) => response.json())

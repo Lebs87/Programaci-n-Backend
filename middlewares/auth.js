@@ -1,5 +1,7 @@
 const passport = require('passport')
-const { Strategy: LocalStrategy } = require('passport-local').Strategy
+const { Strategy } = require('passport-local')
+const LocalStrategy = require('passport-local').Strategy
+const decodedToken = require('./googleauth')
 const { users } = require('../class/userContainer')
 
 passport.use('login', new LocalStrategy(
@@ -10,6 +12,21 @@ passport.use('login', new LocalStrategy(
     } else {
       return done( null, false )
     }
+  }
+))
+
+passport.use('googleauth', new Strategy(
+  async function ( username, password, done ) {
+    const googleUser = await decodedToken( password )
+    const userInDb = await users.checkUser ( username, '' )
+    if ( userInDb.msg != 'No existe usuario' & googleUser.email === username ) {    
+      return done ( null, { username: username })
+    } 
+    if ( userInDb.msg === 'No existe usuario' & googleUser.email === username ) {
+      await users.addUser (username, password)
+      return done ( null, { username: username })
+    }
+    return done( null, false)
   }
 ))
 

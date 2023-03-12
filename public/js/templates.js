@@ -41,11 +41,14 @@ function loginTemplate () {
         <div id="pHelp" class="form-text">Contrasena</div>
       </div>
       <div class="col">
-        <button id="loginBtn" type="" class="btn btn-secondary">LOGIN</button>   
+        <button id="loginBtn" type="" class="btn btn-secondary">USER LOGIN</button>   
       </div>
       <div class="col">
+      <button id="googleBtn" type="" class="btn btn-secondary">GOOGLE LOGIN</button>   
+    </div>
+      <div class="col">
         <a href="register.html">
-          <button id="registerBtn" type="" class="btn btn-secondary">REGISTRO</button> 
+          <button id="registerBtn" type="" class="btn btn-secondary">USER REGISTER</button> 
         </a>
       </div>
     </div>
@@ -141,18 +144,13 @@ function productsTable( products ) {
       <td><img src=${element.thumbnail} style="max-width: 50px; height: auto;"</td>
     </tr>` 
   })
-  
   htmlToRender = htmlToRender + '</tbody></table>'
-  
   return htmlToRender
 }
 
 function chatMessages ( data ) {
-
   const denormalized = denormalizeData (data)
-  
   let htmlChatToRender = `<div class="user">Compresion de mensajes: ${denormalized.percent}%</div>`
-  
   denormalized.data.forEach(( element ) => {
     htmlChatToRender = htmlChatToRender + `
     <div>

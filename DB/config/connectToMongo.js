@@ -4,7 +4,7 @@ let isConected
 const connectToDd = async () => {
   if(!isConected) {
     mongoose.set('strictQuery', true);
-    await mongoose.connect('mongodb+srv://Coderhouse:ZsUGwvYbattJcbhg@cluster1de2daentregapro.7wjuhnc.mongodb.net/test',
+    await mongoose.connect(process.env.MONGOCREDENTIALSECOMMERCE,
     { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => {
           isConected = true

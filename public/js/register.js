@@ -6,7 +6,7 @@ document.getElementById("registerBtn").addEventListener("click", ev => {
         toast('Debe completar todos los datos', "#f75e25", "#ff4000")
     } else {
         if (validateEmail(logName.value)) {
-            fetch(`http://localhost:8080/session/register/`, {
+            fetch(`http://localhost:${location.port}/session/register/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

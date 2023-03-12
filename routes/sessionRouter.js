@@ -22,6 +22,14 @@ sessionRouter.post(
 )
 
 sessionRouter.post(
+  '/logingoogle', 
+  passport.authenticate('googleauth'),
+  function(req, res) {
+    res.status(200).send({ message: 'Autenticación exitosa.' })
+  }
+)
+
+sessionRouter.post(
   '/register',
   passport.authenticate('register'),
   function(req, res) {
