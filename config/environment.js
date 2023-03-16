@@ -1,6 +1,8 @@
 const parseArgs = require('minimist')(process.argv.slice(2))
 const config = {
-  port: parseArgs.p
+  port: parseArgs.p,
+  mode: parseArgs.m,
+  same: parseArgs.a
 }
 
 require('dotenv').config()
