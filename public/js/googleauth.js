@@ -7,15 +7,14 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signO
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAHoSdn6r38ii5ZFewMjFPwjuRZkFfPX9s",
-  authDomain: "hanovershop-df086.firebaseapp.com",
-  projectId: "hanovershop-df086",
-  storageBucket: "hanovershop-df086.appspot.com",
-  messagingSenderId: "276833523153",
-  appId: "1:276833523153:web:b53d427441c88c7573bcf0",
-  measurementId: "G-CJV4Z2LXTM"
-}
-
+  apiKey: "AIzaSyBpL1_8wSbJNdxX4m7K8MKFYK5WRDB1STE",
+  authDomain: "backend-pf2.firebaseapp.com",
+  databaseURL: "https://backend-pf2-default-rtdb.firebaseio.com",
+  projectId: "backend-pf2",
+  storageBucket: "backend-pf2.appspot.com",
+  messagingSenderId: "748751061552",
+  appId: "1:748751061552:web:93a781525c76df65ec63f5"
+};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const auth = getAuth()
