@@ -4,7 +4,6 @@ const socket = io.connect()
 async function main() {
   const user = await userLogged()
   if (user) {
-    console.log(10, user)
     logged(user)
   } else {
     document.querySelector('#sessionUser').innerHTML = loginTemplate()
@@ -14,7 +13,7 @@ async function main() {
       if (validateObject({ a: logName.value, b: logPassword.value })) {
         toast('Debe completar todos los datos', "#f75e25", "#ff4000")
       } else {
-        fetch(`http://localhost:8080/session/login/`, {
+        fetch(`http://localhost:${location.port}/session/login/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -35,7 +34,6 @@ async function main() {
             console.error('Se produjo un error: ', error)
           })
       }
-
     })
 
     document.getElementById("googleBtn").addEventListener("click", async (ev) => {
