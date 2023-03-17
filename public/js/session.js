@@ -16,6 +16,7 @@ function userLoggedTemplates(user) {
 }
 
 function productLoad() {
+    const socket = io.connect()
     const formulario = document.getElementById('formulario')
     formulario.addEventListener('submit', e => {
         e.preventDefault()
@@ -27,7 +28,7 @@ function productLoad() {
             stock: Number(formulario[4].value),
             thumbnail: formulario[5].value
         }
-        if (validateProducto(producto)) {
+        if (validateObject(producto)) {
             alert('Complete todos los datos del producto')
         } else {
             socket.emit('update', producto)
