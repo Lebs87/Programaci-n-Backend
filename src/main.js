@@ -1,5 +1,6 @@
 const { config, staticFiles } = require('../config/environment')
 const express = require('express')
+const { logger, loggererr } = require('../log/logger')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const baseProcces = () => {
@@ -56,6 +57,11 @@ const baseProcces = () => {
   app.use('/api', productRouter)
   app.use('/info', infoRouter)
 
+  app.get('*', (req, res) => {
+    logger.warn(`Ruta: ${req.url}, metodo: ${req.method} no implemantada`)
+    res.send(`Ruta: ${req.url}, metodo: ${req.method} no implemantada`)
+  })
+
   let PORT = (config.port) ? config.port : 8080
 
   if (config.mode === 'CLUSTER') {
@@ -64,7 +70,7 @@ const baseProcces = () => {
   const server = httpServer.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
   })
-  server.on('error', error => console.log(`Error en servidor ${error}`))
+  server.on('error', error => loggererr.error(`Error en servidor ${error}`))
 }
 if (config.mode != 'CLUSTER') {
   console.log('Server en modo FORK')

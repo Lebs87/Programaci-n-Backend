@@ -12,18 +12,13 @@ const productSchema = new Schema({
 })
 
 const cartSchema = new Schema({
-    timestamp: { type: Date, default: Date.now },
-    products: { type: Array, required: true }
+  timestamp: { type: Date, default: Date.now },
+  products: { type: Array, required: true }
 })
 
 const userSchema = new Schema({
   email: { type: String, required: true },
-  password: {type: String, required: true }
-  /*name: { type: String, required: true },
-  surname: { type: String, required: true },
-  age: { type: Number, required: true },
-  nickname: { type: String, required: true },
-  avatar: { type: String, required: true }*/
+  password: { type: String, required: true }
 })
 
 const chatSchema = new Schema({

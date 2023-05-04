@@ -43,7 +43,6 @@ class Container {
       console.log(`Error: ${err}`)
     }
   }
-
 }
 
 const users = new Container( userModel )
