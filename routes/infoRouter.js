@@ -4,8 +4,9 @@ const infoRouter = Router()
 const parseArgs = require('minimist')(process.argv)
 const numCPUs = require('os').cpus().length
 const { logger, loggererr } = require('../log/logger')
-
-infoRouter.get('/', async (req, res) => {
+const compression = require('compression')
+//compression(), 
+infoRouter.get('/', compression(), async (req, res) => {
   let tabla = '<table border="1">'
   tabla += '<tr><th>Descripcion</th><th>Valor</th></tr>'
   for (const key in parseArgs) { if (key !== '_') { tabla += `<tr><td>Argumento</td><td>${key}: ${parseArgs[key]}</td></tr>` } }
