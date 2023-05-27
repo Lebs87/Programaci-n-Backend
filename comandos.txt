@@ -14,4 +14,31 @@
 -Servidor NGINX
   nodemon src/main.js -m FORK -p 8081
   nodemon src/main.js -m CLUSTER -p 8082 -a 1 ### crea un cluster en los puertos 8082 al 8085
-  
+
+-Prueba de Artillery en modo fork y cluster
+  artillery quick --count 50 -n 20 http://localhost:8081?max=100000 > result_fork.txt 
+  artillery quick --count 50 -n 20 http://localhost:8082?max=100000 > result_cluster.txt 
+
+  artillery quick --count 50 -n 20 http://localhost:8081/info?max=100000 > performance/artillery_ConConsole.txt 
+  artillery quick --count 50 -n 20 http://localhost:8081/info?max=100000 > performance/artillery_SinConsole.txt 
+
+- Profiling
+  node --prof src/main.js -m FORK -p 8081
+  node --prof src/main.js -m CLUSTER -p 8082
+
+- Resultados Profiling
+  node --prof-process isolate-000001DE5B705CE0-27728-v8.log > result_prof-fork.txt
+  node --prof-process isolate-0000028906487BA0-25740-v8.log > result_prof-cluster.txt
+
+  node --prof-process isolate-0000024650443CC0-12284-v8.log > performance/result_prof-ConConsole.txt
+  node --prof-process isolate-000001CDE47D6050-13284-v8.log > performance/result_prof-SinConsole.txt
+
+- Node inspect
+  node --inspect src/main.js -m FORK -p 8081
+  node --inspect src/main.js -m CLUSTER -p 8082
+
+- Autocannon
+  autocannon -c 100 -d 20 -p 10 http://localhost:8081/info
+
+- 0x
+  0x -P 'autocannon http://localhost:8081/info' src/main.js
