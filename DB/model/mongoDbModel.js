@@ -13,12 +13,19 @@ const productSchema = new Schema({
 
 const cartSchema = new Schema({
   timestamp: { type: Date, default: Date.now },
-  products: { type: Array, required: true }
+  products: { type: Array, required: true },
+  username: { type: String, required: true }
 })
 
 const userSchema = new Schema({
-  email: { type: String, required: true },
-  password: { type: String, required: true }
+  username: { type: String, required: true },
+  password: {type: String, required: true },
+  name: { type: String, required: true },
+  address: { type: String, required: true },
+  age: { type: Number, required: true },
+  phone: { type: String, required: true },
+  photo: { type: String, required: true },
+  cart: { type: Array, required: true }
 })
 
 const chatSchema = new Schema({
