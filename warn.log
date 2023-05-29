@@ -23,3 +23,11 @@
 [2023-05-04T17:34:53.362] [WARN] default - No hay usuario logeado
 [2023-05-04T17:34:53.489] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
 [2023-05-04T17:34:53.507] [WARN] default - Ruta: /favicon.ico, metodo: GET no implemantada
+[2023-05-29T20:00:15.525] [WARN] default - Ruta: /uploads/lebs88@gmail.com.png, metodo: GET no implemantada
+[2023-05-29T20:00:16.604] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
+[2023-05-29T20:08:18.192] [WARN] default - Ruta: /uploads/lebs88@gmail.com.png, metodo: GET no implemantada
+[2023-05-29T20:08:19.304] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
+[2023-05-29T20:09:23.863] [WARN] default - Ruta: /uploads/lebs87@gmail.com.png, metodo: GET no implemantada
+[2023-05-29T20:09:23.873] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
+[2023-05-29T20:10:44.004] [WARN] default - Ruta: /uploads/lebs87@gmail.com.png, metodo: GET no implemantada
+[2023-05-29T20:10:45.101] [WARN] default - Ruta: /xxx, metodo: GET no implemantada

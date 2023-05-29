@@ -70,7 +70,7 @@ productRouter.get(
       to: process.env.ADMINMAIL,
       subject: `Nuevo pedido de ${username}`,
       text: '',
-      html: generateTable( productList )
+      //html: `${generateTable(productList)}`
     })
 
     sendWa({
