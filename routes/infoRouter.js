@@ -19,7 +19,6 @@ infoRouter.get('/', compression(), async (req, res) => {
   tabla += `<tr><td>Carpeta del proyecto</td><td>${parseArgs._[1]}</td></tr>`
   tabla += '</table>'
   logger.info(`Ruta: /info, metodo: ${req.method}`)
-  console.log(tabla)
   res.send(tabla)
 })
 

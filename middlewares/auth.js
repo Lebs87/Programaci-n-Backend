@@ -6,48 +6,33 @@ const { logger, loggererr } = require('../log/logger')
 const { users } = require('../class/userContainer')
 
 passport.use('login', new LocalStrategy(
-  async function( username, password, done ) {
-    const validateUser = await users.checkUser (username, password)
-    if ( validateUser.result ) {     
-      return done( null, { username: username } )
+  async function (username, password, done) {
+    const validateUser = await users.checkUser(username, password)
+    if (validateUser.result) {
+      return done(null, { username: username })
     } else {
-      logger.info(`Usuario o contrasena incorrectos`)
-      return done( null, false )
+      logger.info(`Usuario o contraseña incorrectos`)
+      return done(null, false)
     }
-  }
-))
-
-passport.use('googleauth', new Strategy(
-  async function ( username, password, done ) {
-    const googleUser = await decodedToken( password )
-    const userInDb = await users.checkUser ( username, '' )
-    if ( userInDb.msg != 'Usuario inexistente' & googleUser.email === username ) {   
-      return done ( null, { username: username })
-    } 
-    if ( userInDb.msg === 'Usuario inexistente' & googleUser.email === username ) {
-      await users.addUser (username, password)
-      return done ( null, { username: username })
-    }
-    logger.info(`Usuario no valido`)
-    return done( null, false)
   }
 ))
 
 passport.use('register', new LocalStrategy(
-  async function( username, password, done ) {
-    if ( await users.addUser (username, password ) ) {
-      return done( null, { username: username } )
+  async (username, password, done) => {
+    if (await users.userInDb(username)) {
+      logger.info(`Se intento registrar un usuario existente`)
+      return done(null, false)
     } else {
       logger.info(`No se ha podido registrar Usuario.`)
-      return done( null, false )
+      return done(null, { username: username })
     }
   }
 ))
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user.username)
 })
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser(function (username, done) {
   done(null, { username: username })
 })
