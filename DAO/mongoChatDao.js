@@ -1,7 +1,6 @@
 const connectToDb = require('../config/connectToMongo')
 const { chatModel } = require('../schemas/mongoDbModel')
 const { normalizedData } = require('../normalize/normal')
-const MemoryChatDao = require('./memoryChatDao')
 
 class Dao { 
   async getAll() {
@@ -43,4 +42,4 @@ class Dao {
   }
 }
 
-module.exports = MemoryChatDao
+module.exports = Dao

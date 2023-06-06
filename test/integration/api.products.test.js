@@ -12,7 +12,7 @@ describe('Product api test', () => {
     })
 
     it('Debe retornar todos los productos que hay cargados', async () => {
-      await request.post('/api/productos-test-add/3') // agrego 3 productos al array
+      await request.post('/api/productos-test-add/3')
       const response = await request.get('/api/productos')
       assert.lengthOf(response.body, 3, 'El array no tiene el largo esperado')
       const expectedKeys = ['title', 'description', 'code', 'price', 'stock', 'thumbnail', 'id']
@@ -26,7 +26,6 @@ describe('Product api test', () => {
       const response = await request.get(`/api/productos/${id}`)
       assert.equal(response.body.id, id, 'El producto no tiene el id esperado')
     })
-
     it('Debe regresar el mensaje producto no encontrado ante un request con id incorrecto', async () => {     
       const response = await request.get(`/api/productos/24`)
       assert.equal(response.status, 404, 'Se espera respuesta 404')
@@ -61,7 +60,7 @@ describe('Product api test', () => {
       response = await request.post(`/api/productos/nuevo`).send({
         title: 123456789,
         description: 123456789,
-        code: '', // se debe asignar un valor a todos los campos
+        code: '',
         price: 123456789,
         stock: 123456789,
         thumbnail: '123456789.jpg'
@@ -75,12 +74,11 @@ describe('Product api test', () => {
         code: 123456789, 
         price: 123456789,
         stock: 123456789,
-        thumbnail: '123456789.js' // se debe proporcionar archivo con formato de imagen
+        thumbnail: '123456789.js'
       })
       assert.equal(response.status, 400, 'Se espera respuesta 400')
       assert.equal(response.body.msg, 'producto no guardado', 'Se ha ingresado producto con una imagen incorrecta a la base de datos')
      })
-  
     it('Debe retornar mensaje producto guardado si el producto se ha almacenado correctamente', async () => {
       const response = await request.post(`/api/productos/nuevo`).send({
         title: 123456789,
@@ -94,5 +92,4 @@ describe('Product api test', () => {
       assert.equal(response.body.msg, 'producto guardado', 'Mensaje no es el esperado')
     })
   })
-  
 })

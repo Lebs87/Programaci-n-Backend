@@ -31,3 +31,9 @@
 [2023-05-29T20:09:23.873] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
 [2023-05-29T20:10:44.004] [WARN] default - Ruta: /uploads/lebs87@gmail.com.png, metodo: GET no implemantada
 [2023-05-29T20:10:45.101] [WARN] default - Ruta: /xxx, metodo: GET no implemantada
+[2023-06-06T12:28:18.329] [WARN] default - No hay usuario logeado
+[2023-06-06T12:30:38.390] [WARN] default - No hay usuario logeado
+[2023-06-06T12:31:26.550] [WARN] default - Ruta: /Mi%20avatar, metodo: GET no implemantada
+[2023-06-06T12:32:41.751] [WARN] default - Ruta: /favicon.ico, metodo: GET no implemantada
+[2023-06-06T12:42:29.179] [WARN] default - Ruta: /favicon.ico, metodo: GET no implemantada
+[2023-06-06T12:43:20.788] [WARN] default - Ruta: /favicon.ico, metodo: GET no implemantada
