@@ -8,37 +8,32 @@ function validateEmail(email) {
   }
 }
 
+function validateObject(objeto) {
+  return Object.values(objeto).includes('')
+}
+
 function toast(mensaje, color1, color2) {
   Toastify({
     text: mensaje,
     duration: 4000,
     newWindow: true,
-    gravity: "top", 
-    position: "right", 
-    stopOnFocus: true, 
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
     style: {
       background: `linear-gradient(to right, ${color1}, ${color2})`,
     },
-    onClick: function () { } 
+    onClick: function () { }
   }).showToast()
 }
 
-function validateObject(objeto) { 
-  for (let clave in objeto) {
-    if (objeto[clave] === '') {
-      toast(`Falta ${clave}`, "#f75e25", "#ff4000")
-    }
-  }
-  return Object.values(objeto).includes('')
-}
-//Logueo
 function loginTemplate() {
   return `
   <div class="container alert alert-secondary text-center" role="alert">
     <h3>LOGIN DE USUARIO</h3>   
     <div class="row">
       <div class="col-4 mb-3">      
-        <input type="text" class="form-control" id="logUser" aria-describedby="pHelp">
+        <input type="text" class="form-control" id="logName" aria-describedby="pHelp">
         <div id="pHelp" class="form-text">Nombre de usuario</div>
       </div>
       <div class="col-4 mb-3">      
@@ -49,43 +44,32 @@ function loginTemplate() {
         <button id="loginBtn" type="" class="btn btn-secondary">USER LOGIN</button>   
       </div>
       <div class="col">
-        <button id="registerBtn" type="" class="btn btn-secondary">USER REGISTER</button> 
+      <button id="googleBtn" type="" class="btn btn-secondary">GOOGLE LOGIN</button>   
+    </div>
+      <div class="col">
+        <a href="register.html">
+          <button id="registerBtn" type="" class="btn btn-secondary">USER REGISTER</button> 
+        </a>
       </div>
     </div>
-  </div>
-  `
+  </div>`
 }
-//Datos del Usuario
-function logOkTemplate(userData) {
+
+function logOkTemplate(user) {
   return `
-  <div class="container alert alert-secondary text-center">
+  <div class="container alert alert-secondary text-center" role="alert">
     <div class="row">
-      <div class="col-3">
-        <img src="${userData.photo}" alt="user photo" width="200px" height="200px">
+      <div class="col-9 mb-3">      
+        <h2>Bienvenido ${user}!!</h2>
       </div>
-      <div class="col-9">          
-        <div class="container">
-          <div class="row justify-content-between mt-2">
-            <div class="col"><h5 class="card-title">Bienvenido ${userData.username}</h5></div>
-            <div class="col-2"><button id="logoutBtn" type="" class="btn btn-secondary">LOGOUT</button></div>
-          </div>
-          <div class="row justify-content-between mt-3">
-            <div class="col">Nombre: ${userData.name}</div>
-            <div class="col text-start">Edad: ${userData.age}</div>
-          </div>
-          <div class="row justify-content-between mt-3">
-            <div class="col">Direccion: ${userData.address}</div>
-            <div class="col text-start">Telefono: ${userData.phone}</div>
-            <div class="col-2"><button id="cartBtn" type="" class="btn btn-success"> CART </button></div>
-          </div>
-        </div>
+      <div class="col-3">
+        <button id="logoutBtn" type="" class="btn btn-secondary">LOGOUT</button> 
       </div>
     </div>
-  </div>
-  `
+  </div>`
 }
-// Cierre de sesion
-function logByeTemplate(user) { 
+
+function logByeTemplate(user) {
   return `
   <div class="container alert alert-secondary text-center" role="alert">
     <div class="row">
@@ -93,141 +77,82 @@ function logByeTemplate(user) {
         <h2>Hasta luego ${user}!!</h2>
       </div>
     </div>
-  </div>
-  `
+  </div>`
 }
 
-// Tabla de productos
-function productsTable(products) { 
-  let htmlToRender = `
-  <div class="container alert alert-secondary text-center">
-    <div class="row">`
-  products.forEach((element) => {
-    htmlToRender = htmlToRender + `
-    <div class="col p-1">
-      <div class="card" style="width: 16rem;">
-        <img src="${element.thumbnail}" class="card-img-top" alt="${element.title} style="width: 14rem; heigth: 14rem"" >
-        <div class="card-body">
-          <h5 class="card-title">${element.title} precio ${element.price}</h5>
-          <p class="card-text">${element.description}</p>
-          <button id="${element._id}" class="btn btn-secondary">Agregar al carrito</button>
+function newProductTemplate() {
+  return `
+    <div class="container">
+      <div class="alert alert-secondary text-center" role="alert">
+        INGRESO DE NUEVO PRODUCTO
+      </div>
+    </div>
+    <form id= "formulario" class="container" action="/api/productos" method="POST" >
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del producto</label>
+        <input type="text" class="form-control" id="name" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripcion</label>
+        <input type="text" class="form-control" id="description" name="description">
+      </div>
+      <div class="row d-flex justify-content-center">
+        <div class="mb-3 col">
+          <label for="code" class="form-label">Codigo</label>
+          <input type="number" class="form-control" id="code" name="code">
+        </div>
+        <div class="mb-3 col">
+          <label for="price" class="form-label">Precio</label>
+          <input type="number" class="form-control" id="price" name="price">
+        </div>
+        <div class="mb-3 col">
+          <label for="stock" class="form-label">Stock</label>
+          <input type="number" class="form-control" id="stock" name="stock">
         </div>
       </div>
-    </div>
-    `
-  })
-  htmlToRender = htmlToRender + '</div></div>'
-  return htmlToRender
+      <div class="mb-3">
+        <label for="picture" class="form-label">Foto del producto</label>
+        <input type="text" class="form-control" id="picture" name="thumbnail" aria-describedby="pictureHelp">
+        <div id="pictureHelp" class="form-text">URL de la foto</div>
+      </div>
+      <button type="submit" class="btn btn-secondary">Guardar</button>
+    </form>`
 }
 
-// Carrito
-function cartViewTemplate(userCart, productsData) {
-  let total = 0
+function productsTable(products) {
   let htmlToRender = `
-  <div class="container">
-    <div class="row">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">Articulo</th>
-            <th scope="col">Cantidad</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-  `
-  userCart.forEach(element => {
-    const article = productsData.find(ele => ele._id === element.id)
-    htmlToRender = htmlToRender += `
+  <table class="table container">
+    <thead>
       <tr>
-        <td><img src="${article.thumbnail}" width="100" height="100"></td>
-        <td>${article.title}</td>
-        <td>${element.cant}</td>
-        <td>$${article.price}</td>
-        <td>$${article.price * element.cant}</td>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Foto</th>
       </tr>
-    `
-    total = + total + article.price * element.cant
-  })
-  htmlToRender = htmlToRender += `
+    </thead>
+    </tbody>`
+  products.forEach((element) => {
+    htmlToRender = htmlToRender + `
     <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <th>TOTAL</th>
-      <th>$${total}</th>
-    </tr>
-  </tbody></table></div>
-  <div class="row">
-    <div class="col">
-      <button id="buyBtn" type="" class="btn btn-secondary">REALIZAR COMPRA</button> 
-    </div>
-    <div class="col">
-      <button id="homeBtn" type="" class="btn btn-secondary">VOLVER A LA TIENDA</button> 
-    </div>
-  </div> 
-  `
+      <td>${element.title}</td>
+      <td>${element.price}</td>
+      <td><img src=${element.thumbnail} style="max-width: 50px; height: auto;"</td>
+    </tr>`
+  })
+  htmlToRender = htmlToRender + '</tbody></table>'
   return htmlToRender
 }
 
-// Registro de Usuario
-function registerNewUserTemplate() {
-  return `  
-  <div class="container alert alert-secondary text-center">
-    <div class="row">
-      <div class="mb-3 col">
-        <label for="name" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="name" name="name">
-      </div>
-      <div class="mb-3 col">
-        <label for="email" class="form-label">Correo electronico</label>
-        <input type="email" class="form-control" id="email" name="email">
-      </div>
-    </div>
-    <div class="row align-items-end">
-      <div class="mb-3 col-7">
-        <label for="address" class="form-label">Direccion</label>
-        <input type="text" class="form-control" id="address" name="address">
-      </div>
-      <div class="mb-3 col-1">
-        <label for="age" class="form-label">Edad</label>
-        <input type="number" class="form-control" id="age" name="age">
-      </div>
-      <div class="mb-3 col-4">
-        <label for="phone" class="form-label">Telefono</label>
-        <input type="tel" class="form-control" id="phone" name="phone">
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 col">
-        <label for="userImage" class="form-label">Selecione una imagen (hasta 1Mb) para su usuario</label>
-        <input type="file" class="form-control" id="userImage" name="userImage">
-      </div>
-      <div class="mb-3 col">
-        <label for="urlImage" class="form-label">o proporcione una url con una imagen</label>
-        <input type="text" class="form-control" id="urlImage" name="urlImage">
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 col">
-        <label for="password" class="form-label">Contrasena</label>
-        <input type="password" class="form-control" id="password" name="password">
-      </div>
-      <div class="mb-3 col">
-        <label for="passwordConf" class="form-label">Repita su contrasena</label>
-        <input type="password" class="form-control" id="passwordConf" name="passwordConf">
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="mb-3 col-2">
-        <button id="registerBtn"  class="col btn btn-success">Confirmar registro</button>
-      </div>
-      <div class="mb-3 col-2">
-        <button id="cancelRegisterBtn"  class="btn btn-danger">Cancelar registro</button>
-      </div>
-    </div>
-  </div>
-  `
+function chatMessages(data) {
+  const denormalized = denormalizeData(data)
+  let htmlChatToRender = `<div class="user">Compresion de mensajes: ${denormalized.percent}%</div>`
+  denormalized.data.forEach((element) => {
+    htmlChatToRender = htmlChatToRender + `
+    <div>
+      <div class="user">User: ${element.user.email} </div>
+      <div class="date">${element.message.timestamp} </div>
+      <div class="mensaje">${element.message.text} </div>
+      <img src="${element.user.avatar}" alt="" width="30" height="30">
+    </div>`
+  })
+  return htmlChatToRender
 }

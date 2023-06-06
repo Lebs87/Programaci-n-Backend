@@ -6,18 +6,23 @@ const numCPUs = require('os').cpus().length
 
 const baseProcces = () => {
   cluster.on('exit', (worker, code, signal) => {
-    logger.info(`Proceso ${worker.process.pid} caido!`)
+    console.log(`Proceso ${worker.process.pid} caido!`)
     cluster.fork()
   })
+
   const expressSession = require('express-session')
   const { Server: HttpServer } = require('http')
+  const { Server: Socket } = require('socket.io')
   const app = express()
   const httpServer = new HttpServer(app)
+  const io = new Socket(httpServer)
   const productRouter = require('../routes/productRouter')
   const sessionRouter = require('../routes/sessionRouter')
   const infoRouter = require('../routes/infoRouter')
   const MongoStore = require('connect-mongo')
   const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
+  const { newProductController, getAllProductsController } = require('../controllers/productsController')
+  const { getAllChatsController, addChatMsgController } = require('../controllers/chatsController')
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(express.static(staticFiles))
@@ -30,11 +35,25 @@ const baseProcces = () => {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000000
+      maxAge: 600000
     }
   }))
-  
-  // Routes
+
+  io.on('connection', async socket => {
+    console.log('Nuevo cliente conectado!')
+    socket.emit('productos', await getAllProductsController())
+    socket.on('update', async producto => {
+      await newProductController(producto)
+      io.sockets.emit('productos', await getAllProductsController())
+    })
+    socket.emit('mensajes', await getAllChatsController())
+    socket.on('newMsj', async mensaje => {
+      mensaje.date = new Date().toLocaleString()
+      await addChatMsgController(mensaje)
+      io.sockets.emit('mensajes', await getAllChatsController())
+    })
+  })
+
   app.use('/session', sessionRouter)
   app.use('/api', productRouter)
   app.use('/info', infoRouter)
@@ -43,28 +62,27 @@ const baseProcces = () => {
     res.send(`Ruta: ${req.url}, metodo: ${req.method} no implemantada`)
   })
 
-  let PORT = ( config.port) ? config.port : 8080
-  if ( config.mode === 'CLUSTER') {
+  let PORT = (config.port) ? config.port : 8080
+  if (config.mode === 'CLUSTER') {
     PORT = config.same === 1 ? PORT + cluster.worker.id - 1 : PORT
-  } 
+  }
   const server = httpServer.listen(PORT, () => {
-    logger.info(`Servidor http escuchando en el puerto ${server.address().port}`)
+    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
   })
   server.on('error', error => loggererr.error(`Error en servidor ${error}`))
 }
-if ( config.mode != 'CLUSTER' ) { 
-
-  //Server modo Fork
-  logger.info('Server en modo FORK')
+if (config.mode != 'CLUSTER') {
+  console.log('Server en modo FORK')
+  console.log('-------------------')
   baseProcces()
-  } else { 
-    //Server modo Cluster 
-    if (cluster.isPrimary) {
-      logger.info('Server en modo CLUSTER')
-      for (let i = 0; i < numCPUs; i++) {
-        cluster.fork()
-      }
-    } else {
-      baseProcces()
+} else {
+  if (cluster.isPrimary) {
+    console.log('Server en modo CLUSTER')
+    console.log('----------------------')
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork()
     }
+  } else {
+    baseProcces()
   }
+}

@@ -1,89 +1,62 @@
+const socket = io.connect()
+
 async function userLogged() {
-    let userData
-    await fetch(`http://localhost:${location.port}/session/`, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        userData = data
-      })
-    return userData
-  }
-  
-  function userLoggedTemplates(userData, productsData ) {
-    document.querySelector('#sessionUser').innerHTML = logOkTemplate( userData )
-    document.querySelector('#productList').innerHTML = productsTable( productsData )
-  }
-  
-  async function cartView( userData, productsData ) {
-    let userCart
-    await fetch(`http://localhost:${location.port}/api/carrito/${userData.username}`, {
-      method: 'GET',
-    })
+  let user
+  await fetch(`http://localhost:${location.port}/session/`, {
+    method: 'GET',
+  })
     .then((response) => response.json())
     .then((data) => {
-        userCart = data.cart[0].cart
-        document.getElementById("productList").innerHTML = cartViewTemplate( userCart, productsData )
-        document.getElementById("homeBtn").addEventListener("click", ev => {
-          location.reload()
-        })
-        document.getElementById("buyBtn").addEventListener("click", async ev => {
-          await fetch(`http://localhost:${location.port}/api/carrito/compra/${userData.username}`, {
-            method: 'GET',
-          })
-          .then(() => {
-            toast('Su compra ha sido realizada', "#00800", "#ff90ee90")
-            setTimeout(() => {
-              location.reload()
-            },2000)  
-          })
-        })
-  
-      })
-    return 
-  }
-  
-  async function userLogout( user ){
-    fetch(`http://localhost:${location.port}/session/logout/`, {
-      method: 'POST',
+      user = data.user
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data.message)
-    })
-    document.querySelector('#sessionUser').innerHTML = logByeTemplate( user )
-    await setTimeout(() => {
-      location.reload()
-    }, 2000)
-  }
-  
-  async function productAddToCart ( productId, username ) {
-    await fetch(`http://localhost:${location.port}/api/carrito/addproduct/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: username,
-        productId: productId
-      })
-    })
-    toast('Producto agregado al carrito', "#00800", "#ff90ee90")
-    return 
-  }
-  
-  function logged( userData, productsData ){
-    userLoggedTemplates( userData, productsData )
-    document.getElementById("productList").addEventListener("click", ev => {
-      const productId = ev.target.id
-      if ( productId.length == 24 ) {
-        productAddToCart( productId, userData.username )
-      }
-    })
-    document.getElementById("logoutBtn").addEventListener("click", ev => {
-      userLogout( userData.username )
-    })
-    document.getElementById("cartBtn").addEventListener("click", ev => {
-      cartView( userData, productsData )
-    })
-  }
+  return user
+}
+
+function userLoggedTemplates(user) {
+  document.querySelector('#sessionUser').innerHTML = logOkTemplate(user)
+  document.querySelector('#newProduct').innerHTML = newProductTemplate()
+}
+
+function productLoad() {
+  const socket = io.connect()
+  const formulario = document.getElementById('formulario')
+  formulario.addEventListener('submit', e => {
+    e.preventDefault()
+    const producto = {
+        title: formulario[0].value,
+        description: formulario[1].value,
+        code: Number(formulario[2].value),
+        price: Number(formulario[3].value),
+        stock: Number(formulario[4].value),
+        thumbnail: formulario[5].value
+    }
+    if (validateObject(producto)){
+      alert('Complete todos los datos del producto')   
+    } else {
+      socket.emit('update', producto)
+      formulario.reset()
+    }
+  })
+}
+
+async function userLogout( user ){
+  fetch(`http://localhost:${location.port}/session/logout/`, {
+    method: 'POST',
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data.message)
+  })
+  document.querySelector('#sessionUser').innerHTML = logByeTemplate( user )
+  await setTimeout(() => {
+    location.reload()
+  }, 2000)
+}
+
+function logged( user ){
+  userLoggedTemplates( user )
+  productLoad()
+  document.getElementById("logoutBtn").addEventListener("click", ev => {
+    userLogout( user )
+  })
+}

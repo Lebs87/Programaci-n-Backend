@@ -1,10 +1,11 @@
 {
-  "name": "desafio14",
+  "name": "desafio15",
   "version": "1.0.0",
-  "description": "Desafio 14",
+  "description": "Desafio 15",
   "main": "./src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test2": "npx mocha",
+    "test": "npx mocha ./test/integration/api.products.test.js > ./test/integration/supertest.txt",
     "start": "nodemon"
   },
   "repository": {
@@ -18,7 +19,6 @@
   },
   "homepage": "https://github.com/Lebs87/Programaci-n-Backend#readme",
   "dependencies": {
-    "autocannon": "^7.10.0",
     "bcrypt": "^5.1.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
@@ -28,12 +28,10 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "firebase-admin": "^11.5.0",
+    "knex": "^2.4.0",
     "log4js": "^6.9.1",
     "minimist": "^1.2.8",
     "mongoose": "^6.9.0",
-    "multer": "^1.4.5-lts.1",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "normalizr": "^3.6.2",
     "passport": "^0.6.0",
@@ -41,10 +39,17 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "session-file-store": "^1.5.0",
-    "twilio": "^4.9.0",
+    "socket.io": "^4.5.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0"
+    "@faker-js/faker": "^7.6.0",
+    "axios": "^1.3.6",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
+  },
+  "directories": {
+    "test": "test"
   }
 }

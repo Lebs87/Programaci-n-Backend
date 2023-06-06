@@ -1,112 +1,57 @@
-const express = require('express')
-const { products } = require('../class/productContainer')
-const { users } = require('../class/userContainer')
-const { Router } = express   
+const { Router } = require('express')  
 const productRouter = Router() 
+const { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, modifyProductByIdController } = require('../controllers/productsController')
+const { mock5 } = require('../DAO/mockFaker')
 const { logger, loggererr } = require('../log/logger')
-const { sendEmail } = require('../messages/email')
-const { sendSMS } = require('../messages/sms')
-const { sendWa } = require('../messages/whatsapp')
-const { generateTable } = require('../api/jsonToHtml')
+const { addProducts } = require('../test/auxfunction') 
 
 productRouter.get(
   '/productos',
   async (req, res) => {
-    const allProducts = await products.getAll()
+    const products = await getAllProductsController()
     logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
-    res.json( allProducts )
+    res.json( products )
   }
 )
 
 productRouter.get(
   '/productos/:id',
   async (req, res) => {
-    const id = Number(req.params.id)
-    const product = await products.getById( id )
+    const product = await getProductByIdController( req.params.id )
     if ( product ) {
       logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
       res.json( product )
     } else {
-      loggererr.error(`Producto id: ${id} no encontrado`) 
+      loggererr.error(`Producto id: ${req.params.id} no encontrado`) 
       res.status(404).send({ error: 'producto no encontrado'})
     }
   }
 )
 
-productRouter.get(
-  '/carrito/:username',
-  async (req, res) => {
-    const username = req.params.username
-    const userData = await users.getUser( username )
-    res.status(200).send({ cart: userData })
-  }
-)
-
 productRouter.post(
-  '/carrito/addproduct',
-  async (req, res) => {
-    await users.addProductToCart( req.body.username, req.body.productId, 1)
-    res.status(200).send({msg: 'todo precioso'})
-  }
-)
-
-productRouter.get(
-  '/carrito/compra/:username',
-  async (req, res) => {
-    const username = req.params.username
-    const userData = await users.getUser( username )
-    const productList = []
-    for ( const element of userData[0].cart ) {
-      const item = await products.getById( element.id )
-      productList.push({ 
-        title: item[0].title,
-        code: item[0].code,
-        cant: element.cant
-       })
-    }
-
-    sendEmail({
-      from: 'Administrador',
-      to: process.env.ADMINMAIL,
-      subject: `Nuevo pedido de ${username}`,
-      text: '',
-      //html: `${generateTable(productList)}`
-    })
-
-    sendWa({
-      body: `Nuevo pedido de ${username}`,
-      to: userData[0].phone
-    })
-
-    sendSMS({
-      body: 'Pedido recibido y en proceso',
-      number: userData[0].phone
-    })
-    res.status(200).send({ cart: userData })
-  }
-)
-
-productRouter.post(
-  '/productos',
+  '/productos/nuevo',
   async (req, res) => {
     const productToAdd = req.body
-    await products.add( productToAdd )
-    logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
-    res.redirect('/')
+    const loaded = await newProductController ( productToAdd )
+    if ( loaded ) {
+      logger.info(`Producto agregado correctamente`)
+      res.status(200).send({ msg: 'producto guardado'})
+    } else {
+      logger.info(`No se pudo agregar producto, datos incorrectos`)
+      res.status(400).send({ msg: 'producto no guardado'})
+    }
   }
 )
 
 productRouter.put(
   '/productos/:id',
   async (req, res) => {
-    const id = Number(req.params.id)
-    const productToModify = req.body
-
-    if(await products.modifyById( id, productToModify )){
+    const response = await modifyProductByIdController( req.params.id, req.body )
+    if( response ) {
       logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
       res.send({ message: 'producto modificado'})
     } else {
-      loggererr.error(`Producto id: ${id} no encontrado`) 
+      loggererr.error(`Producto id: ${req.params.id} no encontrado`) 
       res.status(404).send({ error: 'producto no encontrado'})
     }
   }
@@ -116,7 +61,8 @@ productRouter.delete(
   '/productos/:id',
   async (req, res) => {
     const id = req.params.id
-    if (await products.deleteById(id)) {
+    const response = await delProductByIdController(id)
+    if ( response ) {
       logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
       res.send({ message: 'producto borrado'})
     } else {
@@ -125,5 +71,36 @@ productRouter.delete(
     }
   }
 ) 
+
+productRouter.get(
+  '/productos-test',
+  async (req, res) => {
+    const allProducts = await mock5.getAll()
+    let tabla = '<table>'
+    tabla += '<tr><th>Producto</th><th>Precio</th><th>Imagen</th></tr>'
+    
+    allProducts.forEach((fila) => {
+      tabla += `
+        <tr>
+          <td>${fila.title}</td>
+          <td>${fila.price}</td>
+          <td><img src="${fila.thumbnail}" alt="${fila.title}" width="64" heigth="48"></td>
+        </tr>`
+     })
+    tabla += '</table>'
+
+    logger.info(`Ruta: /api${req.url}, metodo: ${req.method}`)
+    res.send(tabla)
+
+  }
+)
+
+productRouter.post(
+  '/productos-test-add/:number',
+  async (req, res) => {
+    addProducts(req.params.number)
+    res.send({ message: 'productos agregados'})
+  }
+)
 
 module.exports = productRouter

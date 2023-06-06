@@ -1,18 +1,16 @@
-const sessionUserHtmlElement = document.querySelector('#sessionUser')
-const productListHtmlElement = document.querySelector('#productList')
-const registerFormHtmlElement = document.querySelector('#registerForm')
+import { authModule } from "./googleauth.js"
 
+const socket = io.connect()
 async function main() {
-  const userData = await userLogged()
-  if (Object.keys(userData).length != 0) {
-    const productsData = await allProducts()
-    logged(userData[0], productsData)
+  const user = await userLogged()
+  if (user) {
+    logged(user)
   } else {
-    sessionUserHtmlElement.innerHTML = loginTemplate()
-    const logUser = document.getElementById("logUser")
+    document.querySelector('#sessionUser').innerHTML = loginTemplate()
+    const logName = document.getElementById("logName")
     const logPassword = document.getElementById("logPassword")
     document.getElementById("loginBtn").addEventListener("click", ev => {
-      if (validateObject({ usuario: logUser.value, clave: logPassword.value })) {
+      if (validateObject({ a: logName.value, b: logPassword.value })) {
         toast('Debe completar todos los datos', "#f75e25", "#ff4000")
       } else {
         fetch(`http://localhost:${location.port}/session/login/`, {
@@ -21,29 +19,87 @@ async function main() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            username: logUser.value,
+            username: logName.value,
             password: logPassword.value
           })
         })
-          .then((response) => response.json())
-          .then(async (data) => {
-            if (Object.keys(data).length === 0) {
-              toast("Error de autenticacion", "#f75e25", "#ff4000")
+          .then(response => {
+            if (response.status === 401) {
+              toast("Usuario y/o contrasena incorrectos", "#f75e25", "#ff4000")
             } else {
-              const productsData = await allProducts()
-              logged(data[0], productsData)
+              logged(logName.value)
             }
           })
           .catch(error => {
-            toast("Error de autenticacion", "#f75e25", "#ff4000")
             console.error('Se produjo un error: ', error)
           })
       }
     })
-    document.getElementById("registerBtn").addEventListener("click", ev => {
-      registerNewUser(sessionUserHtmlElement)
+    document.getElementById("googleBtn").addEventListener("click", async (ev) => {
+      await authModule.signInWithPopup(authModule.auth, authModule.provider)
+      authModule.onAuthStateChanged(authModule.auth, async user => {
+        if (user) {
+          fetch(`http://localhost:${location.port}/session/logingoogle/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              username: user.email,
+              password: user.accessToken
+            })
+          })
+            .then(response => {
+              if (response.status === 401) {
+                toast("Fallo de autentificacion", "#f75e25", "#ff4000")
+              } else {
+                logged(user.email)
+              }
+            })
+            .catch(error => {
+              console.error('Se produjo un error: ', error)
+            })
+        }
+      })
     })
   }
 }
+
+socket.on('productos', data => {
+  document.querySelector('#tabla').innerHTML = productsTable(data)
+})
+
+const userEmail = document.getElementById("userEmail")
+const userName = document.getElementById("userName")
+const userSurname = document.getElementById("userSurname")
+const userAge = document.getElementById("userAge")
+const userNickname = document.getElementById("userNickname")
+const userAvatar = document.getElementById("userAvatar")
+const userMensaje = document.getElementById("userMsj")
+
+document.getElementById("sendBtn").addEventListener("click", ev => {
+  if (validateEmail(userEmail.value)) {
+    if (userMensaje.value) {
+      socket.emit('newMsj', {
+        author: {
+          id: userEmail.value,
+          name: userName.value,
+          surname: userSurname.value,
+          age: userAge.value,
+          nickname: userNickname.value,
+          avatar: userAvatar.value
+        },
+        text: userMensaje.value
+      })
+      userMensaje.value = ''
+    } else {
+      alert("Ingrese un mensaje!")
+    }
+  }
+})
+
+socket.on('mensajes', data => {
+  document.querySelector('#chat').innerHTML = chatMessages(data)
+})
 
 main()
